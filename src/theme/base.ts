@@ -9,6 +9,11 @@ export function themeCreator(theme: string): Theme {
   return themeMap[theme];
 }
 
+export type ThemeSchemaOptions =
+  | 'PureLightTheme'
+  | 'GreyGooseTheme'
+  | 'PurpleFlowTheme';
+
 declare module '@mui/material/styles' {
   interface Theme {
     colors: {
@@ -250,7 +255,7 @@ declare module '@mui/material/styles' {
   }
 }
 
-const themeMap: { [key: string]: Theme } = {
+const themeMap: Record<string, Theme> = {
   PureLightTheme,
   GreyGooseTheme,
   PurpleFlowTheme
