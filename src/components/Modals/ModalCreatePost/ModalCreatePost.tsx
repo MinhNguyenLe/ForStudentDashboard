@@ -15,7 +15,7 @@ const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
     children: React.ReactElement<any, any>;
   },
-  ref: React.Ref<unknown>,
+  ref: React.Ref<unknown>
 ) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -33,7 +33,7 @@ export default function ModalCreatePost() {
 
   return (
     <div>
-     <ButtonCreatePost onClick={handleClickOpen}/>
+      <ButtonCreatePost onClick={handleClickOpen} />
       <Dialog
         open={open}
         TransitionComponent={Transition}
@@ -42,11 +42,11 @@ export default function ModalCreatePost() {
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle>Create post okay</DialogTitle>
-        <Divider/>
+        <Divider />
         <DialogContent>
-          <FormCreatePost/>
+          <FormCreatePost />
         </DialogContent>
-        <Divider/>
+        <Divider />
         <DialogActions>
           <Button onClick={handleClose}>Save</Button>
           <Button onClick={handleClose}>Cancel</Button>

@@ -1,1 +1,1 @@
-export * from "./FormCreatePost";
+export * from './FormCreatePost';
