@@ -202,6 +202,36 @@ function SidebarMenu() {
             </List>
           </SubMenuWrapper>
         </List>
+
+        <List
+          component="div"
+          subheader={
+            <ListSubheader component="div" disableSticky>
+              Feature V1
+            </ListSubheader>
+          }
+        >
+          <SubMenuWrapper>
+            <List component="div">
+              <ListItem component="div">
+                <NextLink href="/feature-v1/crud-posts" passHref>
+                  <Button
+                    className={
+                      currentRoute === '/feature-v1/crud-posts' ? 'active' : ''
+                    }
+                    disableRipple
+                    component="a"
+                    onClick={closeSidebar}
+                    startIcon={<BrightnessLowTwoToneIcon />}
+                  >
+                    CRUD Posts
+                  </Button>
+                </NextLink>
+              </ListItem>
+            </List>
+          </SubMenuWrapper>
+        </List>
+
         <List
           component="div"
           subheader={
@@ -245,6 +275,7 @@ function SidebarMenu() {
             </List>
           </SubMenuWrapper>
         </List>
+
         <List
           component="div"
           subheader={
