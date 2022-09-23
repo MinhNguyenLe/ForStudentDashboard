@@ -1,0 +1,57 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Locations {
+  id         Int                 @id @default(autoincrement())
+  name       String              @unique
+  posts      PostsAndLocations[]
+  created_at DateTime            @default(now())
+  updated_at DateTime            @default(now())
+}
+
+model Shifts {
+  id         Int              @id @default(autoincrement())
+  name       String           @unique
+  posts      PostsAndShifts[]
+  created_at DateTime         @default(now())
+  updated_at DateTime         @default(now())
+}
+
+model Posts {
+  id              Int                 @id @default(autoincrement())
+  desc_job        String              @default("")
+  price           Float               @default(100)
+  shifts          PostsAndShifts[]
+  locations       PostsAndLocations[]
+  phone_number    String              @default("")
+  address_working String              @default("")
+  created_at      DateTime            @default(now())
+  updated_at      DateTime            @default(now())
+}
+
+model PostsAndLocations {
+  post       Posts     @relation(fields: [postId], references: [id])
+  postId     Int
+  location   Locations @relation(fields: [locationId], references: [id])
+  locationId Int
+
+  @@id([postId, locationId])
+}
+
+model PostsAndShifts {
+  post    Posts  @relation(fields: [postId], references: [id])
+  postId  Int
+  shift   Shifts @relation(fields: [shiftId], references: [id])
+  shiftId Int
+
+  @@id([postId, shiftId])
+}
