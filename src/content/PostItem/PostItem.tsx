@@ -78,9 +78,7 @@ function PostItem() {
                     >
                         Location job
                     </Link>{' '}
-                    • District 2
-                    • District 3
-                    • District 4
+                    • District 2 • District 3 • District 4
                 </Typography>
                 <Typography variant="subtitle2">
                     <Link
@@ -89,10 +87,8 @@ function PostItem() {
                     >
                         Address
                     </Link>{' '}
-                    • 11/8 Ton Duc Thang Street
-                    • 11/8 Ton Duc Thang Street
-                    • 11/8 Ton Duc Thang Street
-                    • 11/8 Ton Duc Thang Street
+                    • 11/8 Ton Duc Thang Street • 11/8 Ton Duc Thang Street •
+                    11/8 Ton Duc Thang Street • 11/8 Ton Duc Thang Street
                 </Typography>
                 <Typography variant="subtitle2">
                     <Link
@@ -101,9 +97,8 @@ function PostItem() {
                     >
                         Shift
                     </Link>{' '}
-                    • From 12:00 to 18:00
-                    • From 12:00 to 18:00
-                    • From 12:00 to 18:00
+                    • From 12:00 to 18:00 • From 12:00 to 18:00 • From 12:00 to
+                    18:00
                 </Typography>
                 <Typography variant="subtitle2">
                     <Link
@@ -112,9 +107,8 @@ function PostItem() {
                     >
                         Contact me
                     </Link>{' '}
-                    • Zalo: 0919 188 756
-                    • Phone: 0919 188 756
-                    • Facebook: http://localhost:3005/feature-v1/crud-posts
+                    • Zalo: 0919 188 756 • Phone: 0919 188 756 • Facebook:
+                    http://localhost:3005/feature-v1/crud-posts
                 </Typography>
                 <Typography variant="subtitle2">
                     <Link
@@ -146,7 +140,8 @@ function PostItem() {
                     <Typography variant="subtitle2" component="span">
                         <Text color="black">
                             <b>Opening</b>
-                        </Text>{' '}•{' '}
+                        </Text>{' '}
+                        •{' '}
                         <Text color="black">
                             <b>63</b>
                         </Text>{' '}
