@@ -23,8 +23,6 @@ export default function createAccounts(
 
     const { email, password } = req.body;
 
-    console.log(email)
-
     prismaClientV1.user
         .create({
             data: {

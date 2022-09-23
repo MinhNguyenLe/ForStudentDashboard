@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next/types';
 import prismaClientV1 from 'backend/prisma-client';
 
-export default function getPosts(
+export default function getAccounts(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
@@ -11,31 +11,22 @@ export default function getPosts(
         });
     }
 
-    prismaClientV1.posts
+    prismaClientV1.user
         .findMany({
-            include: {
-                time_working:true,
-                salary_information:true,
-                work_locations:true,
-                user:{
-                    include:{
-                        account:true
-                    }
-                },
-                postAndHashtag:{
-                    include:{
-                        hashtag: true
-                    }
-                }
+            include:{
+                account:true,
+                posts:true
             }
         })
         .then((results) => {
             return res.status(200).json({
                 success: true,
-                posts: results
+                user: results
             });
         })
         .catch((error) => {
+            console.log(error);
+
             return res.status(500).json({
                 success: false,
                 error: error
