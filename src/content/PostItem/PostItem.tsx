@@ -14,9 +14,7 @@ import {
 import { styled } from '@mui/material/styles';
 
 import MoreHorizTwoToneIcon from '@mui/icons-material/MoreHorizTwoTone';
-import ThumbUpAltTwoToneIcon from '@mui/icons-material/ThumbUpAltTwoTone';
 import CommentTwoToneIcon from '@mui/icons-material/CommentTwoTone';
-import ShareTwoToneIcon from '@mui/icons-material/ShareTwoTone';
 import Text from '@/components/Text';
 
 const CardActionsWrapper = styled(CardActions)(
@@ -38,31 +36,30 @@ function PostItem() {
                 }
                 titleTypographyProps={{ variant: 'h4' }}
                 subheaderTypographyProps={{ variant: 'subtitle2' }}
-                title="Allison Lipshutz"
+                title="Username is ..."
                 subheader={
                     <>
-                        Managing Partner,{' '}
+                        Enterprise name,{' '}
                         <Link
                             href="@/content/Management/Users/settings/PostItem#"
                             underline="hover"
                         >
-                            #software
+                            #Job_title
                         </Link>
                         ,{' '}
                         <Link
                             href="@/content/Management/Users/settings/PostItem#"
                             underline="hover"
                         >
-                            #managers
+                            #Job_name
                         </Link>
-                        , Google Inc.
+                        , Address is ...
                     </>
                 }
             />
             <Box px={3} pb={2}>
                 <Typography variant="h4" fontWeight="normal">
-                    Welcome to organizing your remote office for maximum
-                    productivity.
+                    Description ...
                 </Typography>
             </Box>
             <CardMedia
@@ -72,16 +69,61 @@ function PostItem() {
             />
             <Box p={3}>
                 <Typography variant="h2" sx={{ pb: 1 }}>
-                    Organizing Your Remote Office for Maximum Productivity
+                    Job's name
                 </Typography>
                 <Typography variant="subtitle2">
                     <Link
                         href="@/content/Management/Users/settings/PostItem#"
                         underline="hover"
                     >
-                        example.com
+                        Location job
                     </Link>{' '}
-                    • 4 mins read
+                    • District 2
+                    • District 3
+                    • District 4
+                </Typography>
+                <Typography variant="subtitle2">
+                    <Link
+                        href="@/content/Management/Users/settings/PostItem#"
+                        underline="hover"
+                    >
+                        Address
+                    </Link>{' '}
+                    • 11/8 Ton Duc Thang Street
+                    • 11/8 Ton Duc Thang Street
+                    • 11/8 Ton Duc Thang Street
+                    • 11/8 Ton Duc Thang Street
+                </Typography>
+                <Typography variant="subtitle2">
+                    <Link
+                        href="@/content/Management/Users/settings/PostItem#"
+                        underline="hover"
+                    >
+                        Shift
+                    </Link>{' '}
+                    • From 12:00 to 18:00
+                    • From 12:00 to 18:00
+                    • From 12:00 to 18:00
+                </Typography>
+                <Typography variant="subtitle2">
+                    <Link
+                        href="@/content/Management/Users/settings/PostItem#"
+                        underline="hover"
+                    >
+                        Contact me
+                    </Link>{' '}
+                    • Zalo: 0919 188 756
+                    • Phone: 0919 188 756
+                    • Facebook: http://localhost:3005/feature-v1/crud-posts
+                </Typography>
+                <Typography variant="subtitle2">
+                    <Link
+                        href="@/content/Management/Users/settings/PostItem#"
+                        underline="hover"
+                    >
+                        Count
+                    </Link>{' '}
+                    • 5 members
                 </Typography>
             </Box>
             <Divider />
@@ -94,28 +136,17 @@ function PostItem() {
             >
                 <Box>
                     <Button
-                        startIcon={<ThumbUpAltTwoToneIcon />}
-                        variant="contained"
-                    >
-                        Like
-                    </Button>
-                    <Button
                         startIcon={<CommentTwoToneIcon />}
                         variant="outlined"
-                        sx={{ mx: 2 }}
                     >
                         Comment
-                    </Button>
-                    <Button startIcon={<ShareTwoToneIcon />} variant="outlined">
-                        Share
                     </Button>
                 </Box>
                 <Box sx={{ mt: { xs: 2, md: 0 } }}>
                     <Typography variant="subtitle2" component="span">
                         <Text color="black">
-                            <b>485</b>
-                        </Text>{' '}
-                        reactions •{' '}
+                            <b>Opening</b>
+                        </Text>{' '}•{' '}
                         <Text color="black">
                             <b>63</b>
                         </Text>{' '}

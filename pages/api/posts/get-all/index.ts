@@ -8,7 +8,7 @@ export default function getPosts(req: NextApiRequest, res: NextApiResponse) {
         });
     }
 
-    prismaClientV1.posts
+    prismaClientV1.post
         .findMany({
             include: {
                 locations: true,

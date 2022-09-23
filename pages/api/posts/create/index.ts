@@ -1,11 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next/types';
 import prismaClientV1 from 'backend/prisma-client';
 
-import { Posts, PostsAndLocations, PostsAndShifts } from '@prisma/client';
+import { Post } from '@prisma/client';
 
 interface RequestBodyCreatePost {
-    description: Posts['desc_job'];
-    price: Posts['price'];
+    description: Posts['description'];
+    salary: Posts['salary'];
     locationIds: Array<PostsAndLocations['locationId']>;
     shiftIds: Array<PostsAndShifts['shiftId']>;
 }
@@ -24,7 +24,7 @@ export default function createPosts(
         });
     }
 
-    const { description, price, locationIds, shiftIds } = req.body;
+    const { description, salary, locationIds, shiftIds } = req.body;
 
     const formatLocations = locationIds.map((locationId) => ({
         location: {
@@ -42,11 +42,11 @@ export default function createPosts(
         }
     }));
 
-    prismaClientV1.posts
+    prismaClientV1.post
         .create({
             data: {
-                desc_job: description,
-                price: price,
+                description,
+                salary,
                 locations: {
                     create: formatLocations
                 },
