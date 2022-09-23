@@ -1,18 +1,34 @@
 import type { NextApiRequest, NextApiResponse } from 'next/types';
 import prismaClientV1 from 'backend/prisma-client';
 
-export default function getLocations(
+export default function createLocations(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method !== 'GET') {
+  if (req.method !== 'POST') {
     res
       .status(405)
-      .json({ message: 'Fail: Incorrect method! Should be GET method' });
+      .json({ message: 'Fail: Incorrect method! Should be POST method' });
   }
 
+  const { name, postId } = req.body;
+
   prismaClientV1.locations
-    .findMany({
+    .create({
+      data: {
+        name: name,
+        posts: {
+          create: [
+            {
+              post: {
+                connect: {
+                  id: postId
+                }
+              }
+            }
+          ]
+        }
+      },
       include: {
         posts: true
       }

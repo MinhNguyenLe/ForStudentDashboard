@@ -1,26 +1,29 @@
-import type { NextApiRequest, NextApiResponse } from 'next/types'
-import poolCoreV1 from 'pages/api/postgresql';
+import type { NextApiRequest, NextApiResponse } from 'next/types';
+import prismaClientV1 from 'backend/prisma-client';
 
-export default function getShift  (req: NextApiRequest, res: NextApiResponse) {
-  const query = {
-    text: 'SELECT * FROM shifts',
-  };
-  
-  poolCoreV1.query(
-    query
-  ).then((results)=>{
-    const { rowCount, rows } = results;
+export default function getShift(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method !== 'GET') {
+    res
+      .status(405)
+      .json({ message: 'Fail: Incorrect method! Should be GET method' });
+  }
 
-    return res.status(200).json({
-      success: true,
-      shifts: { rowCount,rows },
+  prismaClientV1.shifts
+    .findMany({
+      include: {
+        posts: true
+      }
+    })
+    .then((results) => {
+      return res.status(200).json({
+        success: true,
+        shifts: results
+      });
+    })
+    .catch((error) => {
+      return res.status(500).json({
+        success: false,
+        error: error
+      });
     });
-  }).catch((error)=>{
-    console.log(error);
-
-    return res.status(500).json({
-      success: false,
-      error: error,
-    });
-  });
-};
+}
