@@ -9,6 +9,7 @@ import { TransitionProps } from '@mui/material/transitions';
 import FormCreatePost from '@/components/Forms/FormCreatePost/FormCreatePost';
 import ButtonCreatePost from './ButtonCreatePost';
 import { Divider } from '@mui/material';
+import fetcher from '@/utils/fetcher';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -28,6 +29,9 @@ export default function ModalCreatePost() {
 
   const handleClose = () => {
     setOpen(false);
+
+    // Test fetcher successful
+    fetcher({prefix:"/api/posts/get-all",method: "GET"}).then((r)=> console.log(r)).catch(e => console.log(e))
   };
 
   return (

@@ -1,7 +1,23 @@
 import type { NextApiRequest, NextApiResponse } from 'next/types';
 import prismaClientV1 from 'backend/prisma-client';
 
-export default function createPosts(req: NextApiRequest, res: NextApiResponse) {
+import { Posts, PostsAndLocations, PostsAndShifts } from '@prisma/client';
+
+interface RequestBodyCreatePost {
+  description: Posts['desc_job'];
+  price: Posts['price'];
+  locationIds: Array<PostsAndLocations['locationId']>;
+  shiftIds: Array<PostsAndShifts['shiftId']>;
+}
+
+interface OverrideNextApiRequest extends Omit<NextApiRequest, 'body'> {
+  body: RequestBodyCreatePost;
+}
+
+export default function createPosts(
+  req: OverrideNextApiRequest,
+  res: NextApiResponse
+) {
   if (req.method !== 'POST') {
     res
       .status(405)
@@ -10,7 +26,7 @@ export default function createPosts(req: NextApiRequest, res: NextApiResponse) {
 
   const { description, price, locationIds, shiftIds } = req.body;
 
-  const formatLocations = locationIds.forEach((locationId) => ({
+  const formatLocations = locationIds.map((locationId) => ({
     location: {
       connect: {
         id: locationId
@@ -18,7 +34,7 @@ export default function createPosts(req: NextApiRequest, res: NextApiResponse) {
     }
   }));
 
-  const formatShifts = shiftIds.forEach((shiftId) => ({
+  const formatShifts = shiftIds.map((shiftId) => ({
     location: {
       connect: {
         id: shiftId
