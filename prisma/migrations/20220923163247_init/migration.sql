@@ -4,6 +4,12 @@ CREATE TYPE "StatusPost" AS ENUM ('OPEN', 'CLOSE');
 -- CreateEnum
 CREATE TYPE "Permission" AS ENUM ('STUDENT', 'ENTERPRISE');
 
+-- CreateEnum
+CREATE TYPE "Star" AS ENUM ('ONE', 'TWO', 'THREE', 'FOUR', 'FIVE');
+
+-- CreateEnum
+CREATE TYPE "NotificationFrom" AS ENUM ('COMMENT', 'POST', 'REVIEW', 'COMMENT_REVIEW');
+
 -- CreateTable
 CREATE TABLE "WorkLocation" (
     "id" SERIAL NOT NULL,
@@ -27,32 +33,43 @@ CREATE TABLE "TimeWorking" (
 );
 
 -- CreateTable
-CREATE TABLE "Salary" (
-    "id" SERIAL NOT NULL,
+CREATE TABLE "SalaryInformation" (
+    "salary_information_id" SERIAL NOT NULL,
     "content" TEXT NOT NULL,
     "post_id" INTEGER NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "Salary_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "SalaryInformation_pkey" PRIMARY KEY ("salary_information_id")
 );
 
 -- CreateTable
 CREATE TABLE "Comment" (
-    "id" SERIAL NOT NULL,
+    "comment_id" SERIAL NOT NULL,
     "content" TEXT NOT NULL,
     "post_id" INTEGER NOT NULL,
     "user_id" INTEGER NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "Comment_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Comment_pkey" PRIMARY KEY ("comment_id")
 );
 
 -- CreateTable
-CREATE TABLE "Post" (
+CREATE TABLE "Hashtag" (
+    "hashtag_id" SERIAL NOT NULL,
+    "content" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Hashtag_pkey" PRIMARY KEY ("hashtag_id")
+);
+
+-- CreateTable
+CREATE TABLE "Posts" (
     "post_id" SERIAL NOT NULL,
-    "description" TEXT NOT NULL DEFAULT '',
+    "description" TEXT NOT NULL,
+    "job_name" TEXT NOT NULL,
     "job_requirement" TEXT NOT NULL DEFAULT '',
     "quantity" INTEGER NOT NULL DEFAULT 1,
     "status" "StatusPost" NOT NULL DEFAULT 'OPEN',
@@ -60,7 +77,15 @@ CREATE TABLE "Post" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "Post_pkey" PRIMARY KEY ("post_id")
+    CONSTRAINT "Posts_pkey" PRIMARY KEY ("post_id")
+);
+
+-- CreateTable
+CREATE TABLE "PostAndHashtag" (
+    "post_id" INTEGER NOT NULL,
+    "hashtag_id" INTEGER NOT NULL,
+
+    CONSTRAINT "PostAndHashtag_pkey" PRIMARY KEY ("post_id","hashtag_id")
 );
 
 -- CreateTable
@@ -134,14 +159,43 @@ CREATE TABLE "Enterprise" (
     CONSTRAINT "Enterprise_pkey" PRIMARY KEY ("enterprise_id")
 );
 
--- CreateIndex
-CREATE UNIQUE INDEX "WorkLocation_content_key" ON "WorkLocation"("content");
+-- CreateTable
+CREATE TABLE "Review" (
+    "review_id" SERIAL NOT NULL,
+    "user_id" INTEGER NOT NULL,
+    "content" TEXT NOT NULL,
+    "star" "Star" NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Review_pkey" PRIMARY KEY ("review_id")
+);
+
+-- CreateTable
+CREATE TABLE "CommentReview" (
+    "comment_review_id" SERIAL NOT NULL,
+    "user_id" INTEGER NOT NULL,
+    "content" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "CommentReview_pkey" PRIMARY KEY ("comment_review_id")
+);
+
+-- CreateTable
+CREATE TABLE "Notification" (
+    "notification_id" SERIAL NOT NULL,
+    "user_id" INTEGER NOT NULL,
+    "content" TEXT NOT NULL,
+    "from" "NotificationFrom" NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Notification_pkey" PRIMARY KEY ("notification_id")
+);
 
 -- CreateIndex
-CREATE UNIQUE INDEX "TimeWorking_content_key" ON "TimeWorking"("content");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Salary_content_key" ON "Salary"("content");
+CREATE UNIQUE INDEX "Hashtag_content_key" ON "Hashtag"("content");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Account_user_id_key" ON "Account"("user_id");
@@ -161,23 +215,38 @@ CREATE UNIQUE INDEX "Student_profile_id_key" ON "Student"("profile_id");
 -- CreateIndex
 CREATE UNIQUE INDEX "Enterprise_profile_id_key" ON "Enterprise"("profile_id");
 
--- AddForeignKey
-ALTER TABLE "WorkLocation" ADD CONSTRAINT "WorkLocation_post_id_fkey" FOREIGN KEY ("post_id") REFERENCES "Post"("post_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+-- CreateIndex
+CREATE UNIQUE INDEX "Review_user_id_key" ON "Review"("user_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "CommentReview_user_id_key" ON "CommentReview"("user_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Notification_user_id_key" ON "Notification"("user_id");
 
 -- AddForeignKey
-ALTER TABLE "TimeWorking" ADD CONSTRAINT "TimeWorking_post_id_fkey" FOREIGN KEY ("post_id") REFERENCES "Post"("post_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "WorkLocation" ADD CONSTRAINT "WorkLocation_post_id_fkey" FOREIGN KEY ("post_id") REFERENCES "Posts"("post_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Salary" ADD CONSTRAINT "Salary_post_id_fkey" FOREIGN KEY ("post_id") REFERENCES "Post"("post_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "TimeWorking" ADD CONSTRAINT "TimeWorking_post_id_fkey" FOREIGN KEY ("post_id") REFERENCES "Posts"("post_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Comment" ADD CONSTRAINT "Comment_post_id_fkey" FOREIGN KEY ("post_id") REFERENCES "Post"("post_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "SalaryInformation" ADD CONSTRAINT "SalaryInformation_post_id_fkey" FOREIGN KEY ("post_id") REFERENCES "Posts"("post_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Comment" ADD CONSTRAINT "Comment_post_id_fkey" FOREIGN KEY ("post_id") REFERENCES "Posts"("post_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Comment" ADD CONSTRAINT "Comment_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("user_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Post" ADD CONSTRAINT "Post_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("user_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Posts" ADD CONSTRAINT "Posts_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("user_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "PostAndHashtag" ADD CONSTRAINT "PostAndHashtag_post_id_fkey" FOREIGN KEY ("post_id") REFERENCES "Posts"("post_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "PostAndHashtag" ADD CONSTRAINT "PostAndHashtag_hashtag_id_fkey" FOREIGN KEY ("hashtag_id") REFERENCES "Hashtag"("hashtag_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Account" ADD CONSTRAINT "Account_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("user_id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -193,3 +262,12 @@ ALTER TABLE "Student" ADD CONSTRAINT "Student_profile_id_fkey" FOREIGN KEY ("pro
 
 -- AddForeignKey
 ALTER TABLE "Enterprise" ADD CONSTRAINT "Enterprise_profile_id_fkey" FOREIGN KEY ("profile_id") REFERENCES "Profile"("user_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Review" ADD CONSTRAINT "Review_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("user_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "CommentReview" ADD CONSTRAINT "CommentReview_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("user_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Notification" ADD CONSTRAINT "Notification_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("user_id") ON DELETE RESTRICT ON UPDATE CASCADE;

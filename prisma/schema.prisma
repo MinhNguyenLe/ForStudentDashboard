@@ -12,8 +12,8 @@ datasource db {
 
 model WorkLocation {
   id         Int      @id @default(autoincrement())
-  content    String   @unique
-  posts      Post     @relation(fields: [post_id], references: [post_id])
+  content    String
+  posts      Posts     @relation(fields: [post_id], references: [post_id])
   post_id    Int
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
@@ -21,8 +21,8 @@ model WorkLocation {
 
 model TimeWorking {
   id         Int      @id @default(autoincrement())
-  content    String   @unique
-  posts      Post     @relation(fields: [post_id], references: [post_id])
+  content    String
+  posts      Posts     @relation(fields: [post_id], references: [post_id])
   post_id    Int
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
@@ -30,8 +30,8 @@ model TimeWorking {
 
 model SalaryInformation {
   salary_information_id Int      @id @default(autoincrement())
-  content               String   @unique
-  posts                 Post     @relation(fields: [post_id], references: [post_id])
+  content               String
+  posts                 Posts     @relation(fields: [post_id], references: [post_id])
   post_id               Int
   created_at            DateTime @default(now())
   updated_at            DateTime @default(now())
@@ -40,7 +40,7 @@ model SalaryInformation {
 model Comment {
   comment_id Int      @id @default(autoincrement())
   content    String
-  post       Post     @relation(fields: [post_id], references: [post_id])
+  post       Posts     @relation(fields: [post_id], references: [post_id])
   post_id    Int
   user       User     @relation(fields: [user_id], references: [user_id])
   user_id    Int
@@ -51,12 +51,12 @@ model Comment {
 model Hashtag {
   hashtag_id     Int              @id @default(autoincrement())
   postAndHashtag PostAndHashtag[]
-  content        String
+  content        String           @unique
   created_at     DateTime         @default(now())
   updated_at     DateTime         @default(now())
 }
 
-model Post {
+model Posts {
   post_id            Int                 @id @default(autoincrement())
   description        String
   job_name           String
@@ -80,7 +80,7 @@ enum StatusPost {
 }
 
 model PostAndHashtag {
-  post       Post    @relation(fields: [post_id], references: [post_id])
+  post       Posts    @relation(fields: [post_id], references: [post_id])
   post_id    Int
   hashtag    Hashtag @relation(fields: [hashtag_id], references: [hashtag_id])
   hashtag_id Int
@@ -93,7 +93,7 @@ model User {
   profile        Profile?
   account        Account?
   comments       Comment[]
-  posts          Post[]
+  posts          Posts[]
   reviews        Review[]
   comment_review CommentReview[]
   notification   Notification[]
