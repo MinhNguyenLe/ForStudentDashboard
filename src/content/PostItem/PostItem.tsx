@@ -26,7 +26,7 @@ const CardActionsWrapper = styled(CardActions)(
 `
 );
 
-function ActivityTab() {
+function PostItem() {
     return (
         <Card>
             <CardHeader
@@ -43,14 +43,14 @@ function ActivityTab() {
                     <>
                         Managing Partner,{' '}
                         <Link
-                            href="@/content/Management/Users/settings/ActivityTab#"
+                            href="@/content/Management/Users/settings/PostItem#"
                             underline="hover"
                         >
                             #software
                         </Link>
                         ,{' '}
                         <Link
-                            href="@/content/Management/Users/settings/ActivityTab#"
+                            href="@/content/Management/Users/settings/PostItem#"
                             underline="hover"
                         >
                             #managers
@@ -76,7 +76,7 @@ function ActivityTab() {
                 </Typography>
                 <Typography variant="subtitle2">
                     <Link
-                        href="@/content/Management/Users/settings/ActivityTab#"
+                        href="@/content/Management/Users/settings/PostItem#"
                         underline="hover"
                     >
                         example.com
@@ -127,4 +127,4 @@ function ActivityTab() {
     );
 }
 
-export default ActivityTab;
+export default PostItem;

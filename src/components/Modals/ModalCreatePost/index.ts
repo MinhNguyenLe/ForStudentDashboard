@@ -1,1 +1,3 @@
-export * from './ModalCreatePost';
+import ModalCreatePost from './ModalCreatePost';
+
+export default ModalCreatePost;

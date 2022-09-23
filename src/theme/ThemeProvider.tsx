@@ -6,27 +6,27 @@ import { StylesProvider } from '@mui/styles';
 export const ThemeContext = createContext((_themeName: string): void => {});
 
 const ThemeProviderWrapper = (props) => {
-  const [themeName, _setThemeName] = useState('PureLightTheme');
+    const [themeName, _setThemeName] = useState('PureLightTheme');
 
-  useEffect(() => {
-    const curThemeName =
-      window.localStorage.getItem('appTheme') || 'PureLightTheme';
-    _setThemeName(curThemeName);
-  }, []);
+    useEffect(() => {
+        const curThemeName =
+            window.localStorage.getItem('appTheme') || 'PureLightTheme';
+        _setThemeName(curThemeName);
+    }, []);
 
-  const theme = themeCreator(themeName);
-  const setThemeName = (themeName: string): void => {
-    window.localStorage.setItem('appTheme', themeName);
-    _setThemeName(themeName);
-  };
+    const theme = themeCreator(themeName);
+    const setThemeName = (themeName: string): void => {
+        window.localStorage.setItem('appTheme', themeName);
+        _setThemeName(themeName);
+    };
 
-  return (
-    <StylesProvider injectFirst>
-      <ThemeContext.Provider value={setThemeName}>
-        <ThemeProvider theme={theme}>{props.children}</ThemeProvider>
-      </ThemeContext.Provider>
-    </StylesProvider>
-  );
+    return (
+        <StylesProvider injectFirst>
+            <ThemeContext.Provider value={setThemeName}>
+                <ThemeProvider theme={theme}>{props.children}</ThemeProvider>
+            </ThemeContext.Provider>
+        </StylesProvider>
+    );
 };
 
 export default ThemeProviderWrapper;
