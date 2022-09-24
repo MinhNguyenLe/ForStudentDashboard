@@ -1,10 +1,10 @@
 {
-  "bracketSpacing": true,
-  "printWidth": 80,
-  "singleQuote": true,
-  "trailingComma": "none",
-  "tabWidth": 4,
-  "useTabs": false,
-  "bracketSameLine": false,
-  "endOfLine":"auto"
+    "bracketSpacing": true,
+    "printWidth": 80,
+    "singleQuote": true,
+    "trailingComma": "none",
+    "tabWidth": 2,
+    "useTabs": false,
+    "bracketSameLine": false,
+    "endOfLine": "auto"
 }
