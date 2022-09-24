@@ -9,12 +9,7 @@ export default function getPosts(req: NextApiRequest, res: NextApiResponse) {
     }
 
     prismaClientV1.post
-        .findMany({
-            include: {
-                locations: true,
-                shifts: true
-            }
-        })
+        .findMany()
         .then((results) => {
             return res.status(200).json({
                 success: true,

@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next/types';
 import prismaClientV1 from 'backend/prisma-client';
-import { Account } from '@prisma/client';
+import { type Account } from '@prisma/client';
 
 interface RequestBodyCreatePost {
     email: Account['email'];
@@ -23,8 +23,6 @@ export default function createAccounts(
 
     const { email, password } = req.body;
 
-    console.log(email)
-
     prismaClientV1.user
         .create({
             data: {
@@ -35,8 +33,8 @@ export default function createAccounts(
                     }
                 }
             },
-            include:{
-                account:true
+            include: {
+                account: true
             }
         })
         .then((results) => {
