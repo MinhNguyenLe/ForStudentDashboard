@@ -17,47 +17,51 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 const clientSideEmotionCache = createEmotionCache();
 
 type NextPageWithLayout = NextPage & {
-  getLayout?: (page: ReactElement) => ReactNode;
+    getLayout?: (page: ReactElement) => ReactNode;
 };
 
 interface StudentAppProps extends AppProps {
-  emotionCache?: EmotionCache;
-  Component: NextPageWithLayout;
+    emotionCache?: EmotionCache;
+    Component: NextPageWithLayout;
 }
 
 function StudentApp(props: StudentAppProps) {
-  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
-  const getLayout = Component.getLayout ?? ((page) => page);
+    const {
+        Component,
+        emotionCache = clientSideEmotionCache,
+        pageProps
+    } = props;
+    const getLayout = Component.getLayout ?? ((page) => page);
 
-  Router.events.on('routeChangeStart', nProgress.start);
-  Router.events.on('routeChangeError', nProgress.done);
-  Router.events.on('routeChangeComplete', nProgress.done);
+    Router.events.on('routeChangeStart', nProgress.start);
+    Router.events.on('routeChangeError', nProgress.done);
+    Router.events.on('routeChangeComplete', nProgress.done);
 
-  return (
-    <CacheProvider value={emotionCache}>
-      <Head>
-        <title>Student Job Part-Time</title>
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, shrink-to-fit=no"
-        />
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content="Part-Time Jobs" />
-        <meta
-          property="og:description"
-          content="FIND PART_TIME JOB FOR STUDENTS"
-        />
-      </Head>
-      <SidebarProvider>
-        <ThemeProvider>
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <CssBaseline />
-            {getLayout(<Component {...pageProps} />)}
-          </LocalizationProvider>
-        </ThemeProvider>
-      </SidebarProvider>
-    </CacheProvider>
-  );
+    return (
+        <CacheProvider value={emotionCache}>
+            <Head>
+                <title>Student Job Part-Time</title>
+                <meta
+                    name="viewport"
+                    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+                />
+                <meta property="og:type" content="website" />
+                <meta property="og:title" content="Part-Time Jobs" />
+                <meta
+                    property="og:description"
+                    content="FIND PART_TIME JOB FOR STUDENTS"
+                />
+            </Head>
+            <SidebarProvider>
+                <ThemeProvider>
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <CssBaseline />
+                        {getLayout(<Component {...pageProps} />)}
+                    </LocalizationProvider>
+                </ThemeProvider>
+            </SidebarProvider>
+        </CacheProvider>
+    );
 }
 
 export default StudentApp;

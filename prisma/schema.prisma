@@ -84,6 +84,10 @@ model PostAndHashtag {
   post_id    Int
   hashtag    Hashtag @relation(fields: [hashtag_id], references: [hashtag_id])
   hashtag_id Int
+<<<<<<< HEAD
+=======
+
+>>>>>>> 483a35bc598d5b4161c7ac5a829706ef0988cc41
   @@id([post_id, hashtag_id])
 }
 
@@ -202,4 +206,8 @@ enum NotificationFrom {
   POST
   REVIEW
   COMMENT_REVIEW
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 483a35bc598d5b4161c7ac5a829706ef0988cc41
