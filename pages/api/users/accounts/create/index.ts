@@ -3,52 +3,52 @@ import prismaClientV1 from 'backend/prisma-client';
 import { type Account } from '@prisma/client';
 
 interface RequestBodyCreatePost {
-    email: Account['email'];
-    password: Account['password'];
+  email: Account['email'];
+  password: Account['password'];
 }
 
 interface OverrideNextApiRequest extends Omit<NextApiRequest, 'body'> {
-    body: RequestBodyCreatePost;
+  body: RequestBodyCreatePost;
 }
 
 export default function createAccounts(
-    req: OverrideNextApiRequest,
-    res: NextApiResponse
+  req: OverrideNextApiRequest,
+  res: NextApiResponse
 ) {
-    if (req.method !== 'POST') {
-        res.status(405).json({
-            message: 'Fail: Incorrect method! Should be POST method'
-        });
-    }
+  if (req.method !== 'POST') {
+    res.status(405).json({
+      message: 'Fail: Incorrect method! Should be POST method'
+    });
+  }
 
-    const { email, password } = req.body;
+  const { email, password } = req.body;
 
-    prismaClientV1.user
-        .create({
-            data: {
-                account: {
-                    create: {
-                        email,
-                        password
-                    }
-                }
-            },
-            include: {
-                account: true
-            }
-        })
-        .then((results) => {
-            return res.status(200).json({
-                success: true,
-                user: results
-            });
-        })
-        .catch((error) => {
-            console.log(error);
+  prismaClientV1.user
+    .create({
+      data: {
+        account: {
+          create: {
+            email,
+            password
+          }
+        }
+      },
+      include: {
+        account: true
+      }
+    })
+    .then((results) => {
+      return res.status(200).json({
+        success: true,
+        user: results
+      });
+    })
+    .catch((error) => {
+      console.log(error);
 
-            return res.status(500).json({
-                success: false,
-                error: error
-            });
-        });
+      return res.status(500).json({
+        success: false,
+        error: error
+      });
+    });
 }

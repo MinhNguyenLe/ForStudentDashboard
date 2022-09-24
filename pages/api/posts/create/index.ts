@@ -2,124 +2,124 @@ import type { NextApiRequest, NextApiResponse } from 'next/types';
 import prismaClientV1 from 'backend/prisma-client';
 
 import type {
-    Post,
-    StatusPost,
-    TimeWorking,
-    SalaryInformation,
-    WorkLocation,
-    User,
-    Hashtag
-    // Contact
+  Post,
+  StatusPost,
+  TimeWorking,
+  SalaryInformation,
+  WorkLocation,
+  User,
+  Hashtag
+  // Contact
 } from '@prisma/client';
 
-interface RequestBodyCreatePost {
-    description: Post['description'];
-    jobName: Post['job_name'];
-    jobRequirement?: Post['job_requirement'];
-    quantity?: Post['quantity'];
-    status: StatusPost;
-    timeWorking: Array<TimeWorking['content']>;
-    salaryInformation: Array<SalaryInformation['content']>;
-    workLocations: Array<WorkLocation['content']>;
-    hashtags: Array<Hashtag['content']>;
-    userId: User['user_id'];
-    // contact: Array<Contact['content']>;
+export interface RequestBodyCreatePost {
+  description: Post['description'];
+  jobName: Post['job_name'];
+  jobRequirement?: Post['job_requirement'];
+  quantity?: Post['quantity'];
+  status: StatusPost;
+  timeWorking: Array<TimeWorking['content']>;
+  salaryInformation: Array<SalaryInformation['content']>;
+  workLocations: Array<WorkLocation['content']>;
+  hashtags: Array<Hashtag['content']>;
+  userId: User['user_id'];
+  // contact: Array<Contact['content']>;
 }
 
 interface OverrideNextApiRequest extends Omit<NextApiRequest, 'body'> {
-    body: RequestBodyCreatePost;
+  body: RequestBodyCreatePost;
 }
 
 export default function createPosts(
-    req: OverrideNextApiRequest,
-    res: NextApiResponse
+  req: OverrideNextApiRequest,
+  res: NextApiResponse
 ) {
-    if (req.method !== 'POST') {
-        res.status(405).json({
-            message: 'Fail: Incorrect method! Should be POST method'
-        });
-    }
+  if (req.method !== 'POST') {
+    res.status(405).json({
+      message: 'Fail: Incorrect method! Should be POST method'
+    });
+  }
 
-    const {
+  const {
+    description,
+    jobName,
+    jobRequirement,
+    quantity,
+    status,
+    timeWorking,
+    salaryInformation,
+    workLocations,
+    hashtags,
+    userId
+    // contact
+  } = req.body;
+
+  const createTimeWorking = timeWorking.map((content) => ({
+    content
+  }));
+
+  const createWorkLocations = workLocations.map((content) => ({
+    content
+  }));
+
+  const createSalaryInformation = salaryInformation.map((content) => ({
+    content
+  }));
+
+  const createHashtags = hashtags.map((content) => {
+    return {
+      hashtag: {
+        create: {
+          content
+        }
+      }
+    };
+  });
+
+  prismaClientV1.post
+    .create({
+      data: {
         description,
-        jobName,
-        jobRequirement,
+        job_name: jobName,
+        job_requirement: jobRequirement,
         quantity,
         status,
-        timeWorking,
-        salaryInformation,
-        workLocations,
-        hashtags,
-        userId
-        // contact
-    } = req.body;
-
-    const createTimeWorking = timeWorking.map((content) => ({
-        content
-    }));
-
-    const createWorkLocations = workLocations.map((content) => ({
-        content
-    }));
-
-    const createSalaryInformation = salaryInformation.map((content) => ({
-        content
-    }));
-
-    const createHashtags = hashtags.map((content) => {
-        return {
-            hashtag: {
-                create: {
-                    content
-                }
-            }
-        };
+        user: {
+          connect: {
+            user_id: userId
+          }
+        },
+        time_working: {
+          create: createTimeWorking
+        },
+        work_locations: {
+          create: createWorkLocations
+        },
+        salary_information: {
+          create: createSalaryInformation
+        },
+        postAndHashtag: {
+          create: createHashtags
+        }
+      },
+      include: {
+        time_working: true,
+        salary_information: true,
+        work_locations: true,
+        postAndHashtag: true,
+        user: true
+      }
+    })
+    .then((results) => {
+      return res.status(200).json({
+        success: true,
+        posts: results
+      });
+    })
+    .catch((error) => {
+      return res.status(500).json({
+        success: false,
+        error: error
+      });
     });
-
-    prismaClientV1.post
-        .create({
-            data: {
-                description,
-                job_name: jobName,
-                job_requirement: jobRequirement,
-                quantity,
-                status,
-                user: {
-                    connect: {
-                        user_id: userId
-                    }
-                },
-                time_working: {
-                    create: createTimeWorking
-                },
-                work_locations: {
-                    create: createWorkLocations
-                },
-                salary_information: {
-                    create: createSalaryInformation
-                },
-                postAndHashtag: {
-                    create: createHashtags
-                }
-            },
-            include: {
-                time_working: true,
-                salary_information: true,
-                work_locations: true,
-                postAndHashtag: true,
-                user: true
-            }
-        })
-        .then((results) => {
-            return res.status(200).json({
-                success: true,
-                posts: results
-            });
-        })
-        .catch((error) => {
-            return res.status(500).json({
-                success: false,
-                error: error
-            });
-        });
 }

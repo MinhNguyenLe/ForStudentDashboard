@@ -6,12 +6,12 @@ import { useState } from 'react';
 import PageTitle from '@/components/PageTitle';
 import PageTitleWrapper from '@/components/PageTitleWrapper';
 import {
-    Container,
-    Grid,
-    Card,
-    CardHeader,
-    CardContent,
-    Divider
+  Container,
+  Grid,
+  Card,
+  CardHeader,
+  CardContent,
+  Divider
 } from '@mui/material';
 import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
@@ -30,121 +30,116 @@ import Footer from '@/components/Footer';
 const emails = ['username@gmail.com', 'user02@gmail.com'];
 
 function SimpleDialog(props) {
-    const { onClose, selectedValue, open } = props;
+  const { onClose, selectedValue, open } = props;
 
-    const handleClose = () => {
-        onClose(selectedValue);
-    };
+  const handleClose = () => {
+    onClose(selectedValue);
+  };
 
-    const handleListItemClick = (value) => {
-        onClose(value);
-    };
+  const handleListItemClick = (value) => {
+    onClose(value);
+  };
 
-    return (
-        <Dialog onClose={handleClose} open={open}>
-            <DialogTitle>Set backup account</DialogTitle>
-            <List sx={{ pt: 0 }}>
-                {emails.map((email) => (
-                    <ListItem
-                        button
-                        onClick={() => handleListItemClick(email)}
-                        key={email}
-                    >
-                        <ListItemAvatar>
-                            <Avatar
-                                sx={{ bgcolor: blue[100], color: blue[600] }}
-                            >
-                                <PersonIcon />
-                            </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText primary={email} />
-                    </ListItem>
-                ))}
+  return (
+    <Dialog onClose={handleClose} open={open}>
+      <DialogTitle>Set backup account</DialogTitle>
+      <List sx={{ pt: 0 }}>
+        {emails.map((email) => (
+          <ListItem
+            button
+            onClick={() => handleListItemClick(email)}
+            key={email}
+          >
+            <ListItemAvatar>
+              <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
+                <PersonIcon />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText primary={email} />
+          </ListItem>
+        ))}
 
-                <ListItem
-                    autoFocus
-                    button
-                    onClick={() => handleListItemClick('addAccount')}
-                >
-                    <ListItemAvatar>
-                        <Avatar>
-                            <AddIcon />
-                        </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary="Add account" />
-                </ListItem>
-            </List>
-        </Dialog>
-    );
+        <ListItem
+          autoFocus
+          button
+          onClick={() => handleListItemClick('addAccount')}
+        >
+          <ListItemAvatar>
+            <Avatar>
+              <AddIcon />
+            </Avatar>
+          </ListItemAvatar>
+          <ListItemText primary="Add account" />
+        </ListItem>
+      </List>
+    </Dialog>
+  );
 }
 
 SimpleDialog.propTypes = {
-    onClose: PropTypes.func.isRequired,
-    open: PropTypes.bool.isRequired,
-    selectedValue: PropTypes.string.isRequired
+  onClose: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired,
+  selectedValue: PropTypes.string.isRequired
 };
 
 function Modals() {
-    const [open, setOpen] = useState(false);
-    const [selectedValue, setSelectedValue] = useState(emails[1]);
+  const [open, setOpen] = useState(false);
+  const [selectedValue, setSelectedValue] = useState(emails[1]);
 
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
 
-    const handleClose = (value) => {
-        setOpen(false);
-        setSelectedValue(value);
-    };
+  const handleClose = (value) => {
+    setOpen(false);
+    setSelectedValue(value);
+  };
 
-    return (
-        <>
-            <Head>
-                <title>Modals - Components</title>
-            </Head>
-            <PageTitleWrapper>
-                <PageTitle
-                    heading="Modals"
-                    subHeading="Dialogs inform users about a task and can contain critical information, require decisions, or involve multiple tasks."
-                    docs="https://material-ui.com/components/dialogs/"
+  return (
+    <>
+      <Head>
+        <title>Modals - Components</title>
+      </Head>
+      <PageTitleWrapper>
+        <PageTitle
+          heading="Modals"
+          subHeading="Dialogs inform users about a task and can contain critical information, require decisions, or involve multiple tasks."
+          docs="https://material-ui.com/components/dialogs/"
+        />
+      </PageTitleWrapper>
+      <Container maxWidth="lg">
+        <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="stretch"
+          spacing={3}
+        >
+          <Grid item xs={12}>
+            <Card>
+              <CardHeader title="Basic Dialog" />
+              <Divider />
+              <CardContent>
+                <Typography variant="subtitle1" component="div">
+                  Selected: {selectedValue}
+                </Typography>
+                <br />
+                <Button variant="outlined" onClick={handleClickOpen}>
+                  Open simple dialog
+                </Button>
+                <SimpleDialog
+                  selectedValue={selectedValue}
+                  open={open}
+                  onClose={handleClose}
                 />
-            </PageTitleWrapper>
-            <Container maxWidth="lg">
-                <Grid
-                    container
-                    direction="row"
-                    justifyContent="center"
-                    alignItems="stretch"
-                    spacing={3}
-                >
-                    <Grid item xs={12}>
-                        <Card>
-                            <CardHeader title="Basic Dialog" />
-                            <Divider />
-                            <CardContent>
-                                <Typography variant="subtitle1" component="div">
-                                    Selected: {selectedValue}
-                                </Typography>
-                                <br />
-                                <Button
-                                    variant="outlined"
-                                    onClick={handleClickOpen}
-                                >
-                                    Open simple dialog
-                                </Button>
-                                <SimpleDialog
-                                    selectedValue={selectedValue}
-                                    open={open}
-                                    onClose={handleClose}
-                                />
-                            </CardContent>
-                        </Card>
-                    </Grid>
-                </Grid>
-            </Container>
-            <Footer />
-        </>
-    );
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+      </Container>
+      <Footer />
+    </>
+  );
 }
 
 Modals.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;
