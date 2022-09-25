@@ -8,15 +8,15 @@ export default function getPostById(req: NextApiRequest, res: NextApiResponse) {
         });
     }
 
-    const { postId } = req.query;
+    const { id } = req.query;
 
-    if (!postId) {
+    if (!id) {
         res.status(405).json({
             message: 'Fail: Please input post id'
         });
     }
 
-    const post_id: string = Array.isArray(postId) ? postId[0] : postId;
+    const post_id: string = Array.isArray(id) ? id[0] : id;
 
     prismaClientV1.posts
         .findUnique({
