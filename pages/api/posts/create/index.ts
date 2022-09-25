@@ -1,8 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next/types';
 import prismaClientV1 from 'backend/prisma-client';
 
-import type {
-  Post,
+import {
+  Posts,
   StatusPost,
   TimeWorking,
   SalaryInformation,
@@ -12,11 +12,11 @@ import type {
   // Contact
 } from '@prisma/client';
 
-export interface RequestBodyCreatePost {
-  description: Post['description'];
-  jobName: Post['job_name'];
-  jobRequirement?: Post['job_requirement'];
-  quantity?: Post['quantity'];
+interface RequestBodyCreatePost {
+  description: Posts['description'];
+  jobName: Posts['job_name'];
+  jobRequirement?: Posts['job_requirement'];
+  quantity?: Posts['quantity'];
   status: StatusPost;
   timeWorking: Array<TimeWorking['content']>;
   salaryInformation: Array<SalaryInformation['content']>;
@@ -76,7 +76,7 @@ export default function createPosts(
     };
   });
 
-  prismaClientV1.post
+  prismaClientV1.posts
     .create({
       data: {
         description,
@@ -106,8 +106,12 @@ export default function createPosts(
         time_working: true,
         salary_information: true,
         work_locations: true,
-        postAndHashtag: true,
-        user: true
+        postAndHashtag: true
+        // user:{
+        //     include:{
+        //         account:true
+        //     }
+        // }
       }
     })
     .then((results) => {

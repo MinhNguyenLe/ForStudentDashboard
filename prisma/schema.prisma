@@ -12,8 +12,8 @@ datasource db {
 
 model WorkLocation {
   id         Int      @id @default(autoincrement())
-  content    String   @unique
-  posts      Post     @relation(fields: [post_id], references: [post_id])
+  content    String
+  posts      Posts    @relation(fields: [post_id], references: [post_id])
   post_id    Int
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
@@ -21,8 +21,8 @@ model WorkLocation {
 
 model TimeWorking {
   id         Int      @id @default(autoincrement())
-  content    String   @unique
-  posts      Post     @relation(fields: [post_id], references: [post_id])
+  content    String
+  posts      Posts    @relation(fields: [post_id], references: [post_id])
   post_id    Int
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
@@ -30,8 +30,8 @@ model TimeWorking {
 
 model SalaryInformation {
   salary_information_id Int      @id @default(autoincrement())
-  content               String   @unique
-  posts                 Post     @relation(fields: [post_id], references: [post_id])
+  content               String
+  posts                 Posts    @relation(fields: [post_id], references: [post_id])
   post_id               Int
   created_at            DateTime @default(now())
   updated_at            DateTime @default(now())
@@ -40,7 +40,7 @@ model SalaryInformation {
 model Comment {
   comment_id Int      @id @default(autoincrement())
   content    String
-  post       Post     @relation(fields: [post_id], references: [post_id])
+  post       Posts    @relation(fields: [post_id], references: [post_id])
   post_id    Int
   user       User     @relation(fields: [user_id], references: [user_id])
   user_id    Int
@@ -51,12 +51,12 @@ model Comment {
 model Hashtag {
   hashtag_id     Int              @id @default(autoincrement())
   postAndHashtag PostAndHashtag[]
-  content        String
+  content        String           @unique
   created_at     DateTime         @default(now())
   updated_at     DateTime         @default(now())
 }
 
-model Post {
+model Posts {
   post_id            Int                 @id @default(autoincrement())
   description        String
   job_name           String
@@ -69,6 +69,7 @@ model Post {
   comments           Comment[]
   postAndHashtag     PostAndHashtag[]
   user               User                @relation(fields: [user_id], references: [user_id])
+  notifications      Notification[]
   user_id            Int
   created_at         DateTime            @default(now())
   updated_at         DateTime            @default(now())
@@ -80,7 +81,7 @@ enum StatusPost {
 }
 
 model PostAndHashtag {
-  post       Post    @relation(fields: [post_id], references: [post_id])
+  post       Posts   @relation(fields: [post_id], references: [post_id])
   post_id    Int
   hashtag    Hashtag @relation(fields: [hashtag_id], references: [hashtag_id])
   hashtag_id Int
@@ -88,16 +89,16 @@ model PostAndHashtag {
 }
 
 model User {
-  user_id        Int             @id @default(autoincrement())
-  profile        Profile?
-  account        Account?
-  comments       Comment[]
-  posts          Post[]
-  reviews        Review[]
-  comment_review CommentReview[]
-  notification   Notification[]
-  created_at     DateTime        @default(now())
-  updated_at     DateTime        @default(now())
+  user_id             Int                     @id @default(autoincrement())
+  profile             Profile?
+  account             Account?
+  comments            Comment[]
+  posts               Posts[]
+  reviews             Review[]
+  comment_review      CommentReview[]
+  userAndNotification UsersAndNotifications[]
+  created_at          DateTime                @default(now())
+  updated_at          DateTime                @default(now())
 }
 
 model Account {
@@ -125,7 +126,7 @@ model Profile {
   user_id    Int         @unique
   permission Permission  @default(STUDENT)
   username   String
-  full_name  String
+  full_name  String      @default("")
   contacts   Contact[]
   avatar     String      @default("")
   student    Student?
@@ -161,13 +162,14 @@ model Enterprise {
 }
 
 model Review {
-  review_id  Int      @id @default(autoincrement())
-  user       User     @relation(fields: [user_id], references: [user_id])
-  user_id    Int      @unique
-  content    String
-  star       Star
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
+  review_id     Int            @id @default(autoincrement())
+  user          User           @relation(fields: [user_id], references: [user_id])
+  user_id       Int            @unique
+  content       String
+  star          Star           @default(THREE)
+  notifications Notification[]
+  created_at    DateTime       @default(now())
+  updated_at    DateTime       @default(now())
 }
 
 enum Star {
@@ -188,18 +190,31 @@ model CommentReview {
 }
 
 model Notification {
-  notification_id Int              @id @default(autoincrement())
-  user            User             @relation(fields: [user_id], references: [user_id])
-  user_id         Int              @unique
-  content         String
-  from            NotificationFrom
-  created_at      DateTime         @default(now())
-  updated_at      DateTime         @default(now())
+  notification_id       Int                     @id @default(autoincrement())
+  user_and_notification UsersAndNotifications[]
+  content               String
+  from                  NotificationFrom
+  post                  Posts?                  @relation(fields: [post_id], references: [post_id])
+  post_id               Int?
+  review                Review?                 @relation(fields: [review_id], references: [review_id])
+  review_id             Int?
+  isRead                Boolean                 @default(false)
+  created_at            DateTime                @default(now())
+  updated_at            DateTime                @default(now())
 }
 
 enum NotificationFrom {
-  COMMENT
   POST
   REVIEW
-  COMMENT_REVIEW
+  // COMMENT
+  // COMMENT_REVIEW
+}
+
+model UsersAndNotifications {
+  user            User         @relation(fields: [user_id], references: [user_id])
+  user_id         Int
+  notification    Notification @relation(fields: [notification_id], references: [notification_id])
+  notification_id Int
+
+  @@id([user_id, notification_id])
 }
