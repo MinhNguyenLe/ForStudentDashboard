@@ -9,14 +9,14 @@ import { styled } from '@mui/material/styles';
 const Anchor = styled('a')({});
 
 export type FixOmit = Omit<
-    React.AnchorHTMLAttributes<HTMLAnchorElement>,
-    'href'
+  React.AnchorHTMLAttributes<HTMLAnchorElement>,
+  'href'
 > &
-    Omit<NextLinkProps, 'href' | 'as' | 'onClick' | 'onMouseEnter'>;
+  Omit<NextLinkProps, 'href' | 'as' | 'onClick' | 'onMouseEnter'>;
 
 interface NextLinkComposedProps extends FixOmit {
-    to: NextLinkProps['href'];
-    linkAs?: NextLinkProps['as'];
+  to: NextLinkProps['href'];
+  linkAs?: NextLinkProps['as'];
 }
 
 export const NextLinkComposed = React.forwardRef<

@@ -8,34 +8,34 @@ export default function getPosts(req: NextApiRequest, res: NextApiResponse) {
     });
   }
 
-    prismaClientV1.posts
-        .findMany({
-            include: {
-                time_working: true,
-                salary_information: true,
-                work_locations: true,
-                user: {
-                    include: {
-                        account: true
-                    }
-                },
-                postAndHashtag: {
-                    include: {
-                        hashtag: true
-                    }
-                }
-            }
-        })
-        .then((results) => {
-            return res.status(200).json({
-                success: true,
-                posts: results
-            });
-        })
-        .catch((error) => {
-            return res.status(500).json({
-                success: false,
-                error: error
-            });
-        });
+  prismaClientV1.posts
+    .findMany({
+      include: {
+        time_working: true,
+        salary_information: true,
+        work_locations: true,
+        user: {
+          include: {
+            account: true
+          }
+        },
+        postAndHashtag: {
+          include: {
+            hashtag: true
+          }
+        }
+      }
+    })
+    .then((results) => {
+      return res.status(200).json({
+        success: true,
+        posts: results
+      });
+    })
+    .catch((error) => {
+      return res.status(500).json({
+        success: false,
+        error: error
+      });
+    });
 }
