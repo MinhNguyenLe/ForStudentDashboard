@@ -1,10 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next/types';
 import prismaClientV1 from 'backend/prisma-client';
 
-export default function getAccounts(
-    req: NextApiRequest,
-    res: NextApiResponse
-) {
+export default function getAccounts(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== 'GET') {
         res.status(405).json({
             message: 'Fail: Incorrect method! Should be GET method'
@@ -13,9 +10,9 @@ export default function getAccounts(
 
     prismaClientV1.user
         .findMany({
-            include:{
-                account:true,
-                posts:true
+            include: {
+                account: true,
+                posts: true
             }
         })
         .then((results) => {

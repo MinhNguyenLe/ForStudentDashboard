@@ -1,12 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from 'next/types';
 import prismaClientV1 from 'backend/prisma-client';
-import { Account } from '@prisma/client';
+import { Account, Profile } from '@prisma/client';
 
-import { hash } from "bcrypt";
+import { hash } from 'bcrypt';
 
 interface RequestBodyCreatePost {
     email: Account['email'];
     password: Account['password'];
+    permission: Profile['permission'];
+    username: Profile['username'];
 }
 
 interface OverrideNextApiRequest extends Omit<NextApiRequest, 'body'> {
@@ -23,7 +25,7 @@ export default async function createAccounts(
         });
     }
 
-    const { email, password } = req.body;
+    const { email, password, permission, username } = req.body;
 
     const hashedPassword = await hash(password, 10);
 
@@ -33,12 +35,18 @@ export default async function createAccounts(
                 account: {
                     create: {
                         email,
-                        password:hashedPassword
+                        password: hashedPassword
+                    }
+                },
+                profile: {
+                    create: {
+                        permission,
+                        username
                     }
                 }
             },
-            include:{
-                account:true
+            include: {
+                account: true
             }
         })
         .then((results) => {

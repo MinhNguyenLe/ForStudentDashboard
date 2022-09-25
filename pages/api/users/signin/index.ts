@@ -15,7 +15,6 @@ interface OverrideNextApiRequest extends Omit<NextApiRequest, 'body'> {
     body: RequestBodyCreatePost;
 }
 
-
 export default async function createPosts(
     req: OverrideNextApiRequest,
     res: NextApiResponse
@@ -40,18 +39,20 @@ export default async function createPosts(
 
         const validPassword = await compare(password, user.password);
         if (!validPassword) {
-            throw new Error("Wrong password");
+            throw new Error('Wrong password');
         }
 
-        const token = await sign({
-            email
-        }, process.env.SECRET || "secret");
+        const token = await sign(
+            {
+                email
+            },
+            process.env.SECRET || 'secret'
+        );
 
         return res.status(200).json({
             success: true,
             token
         });
-
     } catch (error) {
         return res.status(500).json({
             success: false,
