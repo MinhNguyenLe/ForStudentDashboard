@@ -27,23 +27,61 @@ interface RequestBodyCreatePost {
 }
 
 interface OverrideNextApiRequest extends Omit<NextApiRequest, 'body'> {
-    body: RequestBodyCreatePost;
+  body: RequestBodyCreatePost;
 }
 
 export default function createPosts(
-    req: OverrideNextApiRequest,
-    res: NextApiResponse
+  req: OverrideNextApiRequest,
+  res: NextApiResponse
 ) {
-    if (req.method !== 'POST') {
-        res.status(405).json({
-            message: 'Fail: Incorrect method! Should be POST method'
-        });
-    }
+  if (req.method !== 'POST') {
+    res.status(405).json({
+      message: 'Fail: Incorrect method! Should be POST method'
+    });
+  }
 
-    const {
+  const {
+    description,
+    jobName,
+    jobRequirement,
+    quantity,
+    status,
+    timeWorking,
+    salaryInformation,
+    workLocations,
+    hashtags,
+    userId
+    // contact
+  } = req.body;
+
+  const createTimeWorking = timeWorking.map((content) => ({
+    content
+  }));
+
+  const createWorkLocations = workLocations.map((content) => ({
+    content
+  }));
+
+  const createSalaryInformation = salaryInformation.map((content) => ({
+    content
+  }));
+
+  const createHashtags = hashtags.map((content) => {
+    return {
+      hashtag: {
+        create: {
+          content
+        }
+      }
+    };
+  });
+
+  prismaClientV1.post
+    .create({
+      data: {
         description,
-        jobName,
-        jobRequirement,
+        job_name: jobName,
+        job_requirement: jobRequirement,
         quantity,
         status,
         timeWorking,

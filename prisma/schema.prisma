@@ -85,7 +85,6 @@ model PostAndHashtag {
   post_id    Int
   hashtag    Hashtag @relation(fields: [hashtag_id], references: [hashtag_id])
   hashtag_id Int
-
   @@id([post_id, hashtag_id])
 }
 

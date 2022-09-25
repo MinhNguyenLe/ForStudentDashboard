@@ -12,18 +12,18 @@ interface RequestBodyCreatePost {
 }
 
 interface OverrideNextApiRequest extends Omit<NextApiRequest, 'body'> {
-    body: RequestBodyCreatePost;
+  body: RequestBodyCreatePost;
 }
 
 export default async function createAccounts(
     req: OverrideNextApiRequest,
     res: NextApiResponse
 ) {
-    if (req.method !== 'POST') {
-        res.status(405).json({
-            message: 'Fail: Incorrect method! Should be POST method'
-        });
-    }
+  if (req.method !== 'POST') {
+    res.status(405).json({
+      message: 'Fail: Incorrect method! Should be POST method'
+    });
+  }
 
     const { email, password, permission, username } = req.body;
 
