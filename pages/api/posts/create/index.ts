@@ -8,7 +8,7 @@ import {
     SalaryInformation,
     WorkLocation,
     User,
-    Hashtag,
+    Hashtag
     // Contact
 } from '@prisma/client';
 
@@ -50,7 +50,7 @@ export default function createPosts(
         salaryInformation,
         workLocations,
         hashtags,
-        userId,
+        userId
         // contact
     } = req.body;
 
@@ -103,10 +103,10 @@ export default function createPosts(
                 }
             },
             include: {
-                time_working:true,
-                salary_information:true,
-                work_locations:true,
-                postAndHashtag:true,
+                time_working: true,
+                salary_information: true,
+                work_locations: true,
+                postAndHashtag: true
                 // user:{
                 //     include:{
                 //         account:true

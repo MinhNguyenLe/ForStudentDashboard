@@ -8,9 +8,13 @@ import { styled } from '@mui/material/styles';
 // Add support for the sx prop for consistency with the other branches.
 const Anchor = styled('a')({});
 
-interface NextLinkComposedProps
-    extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href'>,
-        Omit<NextLinkProps, 'href' | 'as' | 'onClick' | 'onMouseEnter'> {
+export type FixOmit = Omit<
+    React.AnchorHTMLAttributes<HTMLAnchorElement>,
+    'href'
+> &
+    Omit<NextLinkProps, 'href' | 'as' | 'onClick' | 'onMouseEnter'>;
+
+interface NextLinkComposedProps extends FixOmit {
     to: NextLinkProps['href'];
     linkAs?: NextLinkProps['as'];
 }
