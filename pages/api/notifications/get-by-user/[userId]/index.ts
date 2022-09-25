@@ -23,7 +23,7 @@ export default function getByUser(req: NextApiRequest, res: NextApiResponse) {
             },
             orderBy: {
                 notification: {
-                    created_at: 'asc'
+                    created_at: "desc"
                 }
             }
         })
