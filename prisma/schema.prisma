@@ -10,31 +10,64 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum StatusPost {
+  OPEN
+  CLOSE
+}
+
+enum Permission {
+  STUDENT
+  ENTERPRISE
+}
+
+enum Star {
+  ONE
+  TWO
+  THREE
+  FOUR
+  FIVE
+}
+
+enum NotificationFrom {
+  POST
+  REVIEW
+  // COMMENT
+  // COMMENT_REVIEW
+}
+
+enum UnitCurrency {
+  USD
+  VND
+}
+
 model WorkLocation {
-  id         Int      @id @default(autoincrement())
-  content    String
-  posts      Posts    @relation(fields: [post_id], references: [post_id])
-  post_id    Int
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
+  work_location_id         Int                        @id @default(autoincrement())
+  content                  String
+  posts                    Posts                      @relation(fields: [post_id], references: [post_id])
+  post_id                  Int
+  workLocationsAndHashtags WorkLocationsAndHashtags[]
+  created_at               DateTime                   @default(now())
+  updated_at               DateTime                   @default(now())
 }
 
 model TimeWorking {
-  id         Int      @id @default(autoincrement())
-  content    String
-  posts      Posts    @relation(fields: [post_id], references: [post_id])
-  post_id    Int
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
+  time_working_id         Int                       @id @default(autoincrement())
+  content                 String
+  posts                   Posts                     @relation(fields: [post_id], references: [post_id])
+  post_id                 Int
+  timesWorkingAndHashtags TimesWorkingAndHashtags[]
+  created_at              DateTime                  @default(now())
+  updated_at              DateTime                  @default(now())
 }
 
 model SalaryInformation {
-  salary_information_id Int      @id @default(autoincrement())
-  content               String
-  posts                 Posts    @relation(fields: [post_id], references: [post_id])
+  salary_information_id Int          @id @default(autoincrement())
+  content               Int
+  unit                  UnitCurrency @default(USD)
+  posts                 Posts        @relation(fields: [post_id], references: [post_id])
   post_id               Int
-  created_at            DateTime @default(now())
-  updated_at            DateTime @default(now())
+  created_at            DateTime     @default(now())
+  updated_at            DateTime     @default(now())
 }
 
 model Comment {
@@ -49,11 +82,13 @@ model Comment {
 }
 
 model Hashtag {
-  hashtag_id     Int              @id @default(autoincrement())
-  postAndHashtag PostAndHashtag[]
-  content        String           @unique
-  created_at     DateTime         @default(now())
-  updated_at     DateTime         @default(now())
+  hashtag_id               Int                        @id @default(autoincrement())
+  postAndHashtag           PostAndHashtag[]
+  workLocationsAndHashtags WorkLocationsAndHashtags[]
+  timesWorkingAndHashtags  TimesWorkingAndHashtags[]
+  content                  String                     @unique
+  created_at               DateTime                   @default(now())
+  updated_at               DateTime                   @default(now())
 }
 
 model Posts {
@@ -75,17 +110,31 @@ model Posts {
   updated_at         DateTime            @default(now())
 }
 
-enum StatusPost {
-  OPEN
-  CLOSE
-}
-
 model PostAndHashtag {
   post       Posts   @relation(fields: [post_id], references: [post_id])
   post_id    Int
   hashtag    Hashtag @relation(fields: [hashtag_id], references: [hashtag_id])
   hashtag_id Int
+
   @@id([post_id, hashtag_id])
+}
+
+model WorkLocationsAndHashtags {
+  work_location    WorkLocation @relation(fields: [work_location_id], references: [work_location_id])
+  work_location_id Int
+  hashtag          Hashtag      @relation(fields: [hashtag_id], references: [hashtag_id])
+  hashtag_id       Int
+
+  @@id([work_location_id, hashtag_id])
+}
+
+model TimesWorkingAndHashtags {
+  time_working    TimeWorking @relation(fields: [time_working_id], references: [time_working_id])
+  time_working_id Int
+  hashtag         Hashtag     @relation(fields: [hashtag_id], references: [hashtag_id])
+  hashtag_id      Int
+
+  @@id([time_working_id, hashtag_id])
 }
 
 model User {
@@ -126,18 +175,13 @@ model Profile {
   user_id    Int         @unique
   permission Permission  @default(STUDENT)
   username   String
-  full_name  String      @default("")
+  full_name  String?     @default("")
   contacts   Contact[]
-  avatar     String      @default("")
+  avatar     String?     @default("")
   student    Student?
   enterprise Enterprise?
   created_at DateTime    @default(now())
   updated_at DateTime    @default(now())
-}
-
-enum Permission {
-  STUDENT
-  ENTERPRISE
 }
 
 model Student {
@@ -166,18 +210,10 @@ model Review {
   user          User           @relation(fields: [user_id], references: [user_id])
   user_id       Int            @unique
   content       String
-  star          Star           @default(THREE)
+  rate          Star           @default(THREE)
   notifications Notification[]
   created_at    DateTime       @default(now())
   updated_at    DateTime       @default(now())
-}
-
-enum Star {
-  ONE
-  TWO
-  THREE
-  FOUR
-  FIVE
 }
 
 model CommentReview {
@@ -201,13 +237,6 @@ model Notification {
   isRead                Boolean                 @default(false)
   created_at            DateTime                @default(now())
   updated_at            DateTime                @default(now())
-}
-
-enum NotificationFrom {
-  POST
-  REVIEW
-  // COMMENT
-  // COMMENT_REVIEW
 }
 
 model UsersAndNotifications {

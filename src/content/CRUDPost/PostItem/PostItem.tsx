@@ -57,11 +57,6 @@ function PostItem() {
           </>
         }
       />
-      <Box px={3} pb={2}>
-        <Typography variant="h4" fontWeight="normal">
-          Description ...
-        </Typography>
-      </Box>
       <CardMedia
         sx={{ minHeight: 280 }}
         image="/static/images/placeholders/covers/6.jpg"
@@ -71,51 +66,36 @@ function PostItem() {
         <Typography variant="h2" sx={{ pb: 1 }}>
           Job's name
         </Typography>
-        <Typography variant="subtitle2">
-          <Link
-            href="@/content/Management/Users/settings/PostItem#"
-            underline="hover"
-          >
+        <Typography variant="subtitle2" component="div">
+          <Typography variant="subtitle2" component="span" color="primary">
             Location job
-          </Link>{' '}
+          </Typography>{' '}
           • District 2 • District 3 • District 4
         </Typography>
-        <Typography variant="subtitle2">
-          <Link
-            href="@/content/Management/Users/settings/PostItem#"
-            underline="hover"
-          >
+        <Typography variant="subtitle2" component="div">
+          <Typography variant="subtitle2" component="span" color="primary">
             Address
-          </Link>{' '}
+          </Typography>{' '}
           • 11/8 Ton Duc Thang Street • 11/8 Ton Duc Thang Street • 11/8 Ton Duc
           Thang Street • 11/8 Ton Duc Thang Street
         </Typography>
         <Typography variant="subtitle2">
-          <Link
-            href="@/content/Management/Users/settings/PostItem#"
-            underline="hover"
-          >
-            Shift
-          </Link>{' '}
+          <Typography variant="subtitle2" component="span" color="primary">
+            underline="hover" Shift
+          </Typography>{' '}
           • From 12:00 to 18:00 • From 12:00 to 18:00 • From 12:00 to 18:00
         </Typography>
-        <Typography variant="subtitle2">
-          <Link
-            href="@/content/Management/Users/settings/PostItem#"
-            underline="hover"
-          >
+        <Typography variant="subtitle2" component="div">
+          <Typography variant="subtitle2" component="span" color="primary">
             Contact me
-          </Link>{' '}
+          </Typography>{' '}
           • Zalo: 0919 188 756 • Phone: 0919 188 756 • Facebook:
           http://localhost:3005/feature-v1/crud-posts
         </Typography>
-        <Typography variant="subtitle2">
-          <Link
-            href="@/content/Management/Users/settings/PostItem#"
-            underline="hover"
-          >
+        <Typography variant="subtitle2" component="div">
+          <Typography variant="subtitle2" component="span" color="primary">
             Count
-          </Link>{' '}
+          </Typography>{' '}
           • 5 members
         </Typography>
       </Box>

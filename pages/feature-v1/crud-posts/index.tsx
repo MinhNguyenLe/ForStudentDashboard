@@ -5,8 +5,8 @@ import PageTitleWrapper from '@/components/PageTitleWrapper';
 import { Container, Grid } from '@mui/material';
 import Footer from '@/components/Footer';
 
-import ModalCreatePost from '@/components/Modals/ModalCreatePost';
-import PostItem from '@/content/PostItem';
+import ModalCreatePost from '@/content/CRUDPost/ModalCreatePost';
+import PostItem from '@/content/CRUDPost/PostItem';
 
 function ManagementUserSettings() {
   return (
