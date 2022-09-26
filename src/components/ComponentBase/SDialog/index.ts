@@ -1,3 +1,2 @@
-import SDialog from './SDialog';
-
-export default SDialog;
+export * from './SDialog';
+export { default } from './SDialog';

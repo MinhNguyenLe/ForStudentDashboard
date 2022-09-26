@@ -71,6 +71,7 @@ export default function ModalCreatePost() {
     >
       <ButtonCreatePost onClick={onOpenDialog} />
       <SDialog
+        titleContent="Create post okay"
         onCloseAtHeader={() => {}}
         open={open}
         onCloseDialog={onCloseDialog}

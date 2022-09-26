@@ -1,3 +1,2 @@
-import HookFormProvider from './HookFormProvider';
-
-export default HookFormProvider;
+export * from './HookFormProvider';
+export { default } from './HookFormProvider';

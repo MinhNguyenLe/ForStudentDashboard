@@ -1,20 +1,39 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 
 export default function FormCreatePost() {
   return (
     <Box
-      component="form"
       sx={{
-        '& > :not(style)': { m: 1, width: '25ch' }
+        '& > :not(style)': { m: 1, minWidth: '25ch' }
       }}
-      noValidate
-      autoComplete="off"
     >
-      <TextField id="outlined-basic" label="Outlined" variant="outlined" />
-      <TextField id="filled-basic" label="Filled" variant="filled" />
-      <TextField id="standard-basic" label="Standard" variant="standard" />
+      <Box display="flex" alignItems="center">
+        <Box>
+          <Typography variant="subtitle2" pr="16px" color="primary" noWrap>
+            Location job
+          </Typography>
+        </Box>
+        <Box display="flex" flexDirection="column">
+          <TextField size="small" label="Outlined" fullWidth />
+          <Box display="flex" mt="8px" flexWrap="wrap">
+            <Typography mr="4px">• District 2</Typography>
+            <Typography mr="4px">• District 3</Typography>
+            <Typography mr="4px">• District 4</Typography>
+            <Typography mr="4px">• District 2</Typography>
+            <Typography mr="4px">• District 3</Typography>
+            <Typography mr="4px">• District 4</Typography>
+            <Typography mr="4px">• District 2</Typography>
+            <Typography mr="4px">• District 3</Typography>
+            <Typography mr="4px">• District 4</Typography>
+            <Typography mr="4px">• District 2</Typography>
+            <Typography mr="4px">• District 3</Typography>
+            <Typography mr="4px">• District 4</Typography>
+          </Box>
+        </Box>
+      </Box>
     </Box>
   );
 }

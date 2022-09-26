@@ -29,6 +29,7 @@ interface SDialogProps
     Pick<UseDialogReturn, 'open' | 'onCloseDialog'> {
   isSubmitting?: boolean;
   onCloseAtHeader?: () => void;
+  titleContent: string;
 }
 
 export default function SDialog({
@@ -36,7 +37,8 @@ export default function SDialog({
   open,
   onCloseDialog,
   isSubmitting = false,
-  onCloseAtHeader
+  onCloseAtHeader,
+  titleContent
 }: PropsWithChildren<SDialogProps>) {
   return (
     <Dialog
@@ -49,7 +51,7 @@ export default function SDialog({
       <DialogTitle>
         <Box display="flex" alignItems="center">
           <Box flex={1}>
-            <Typography>Create post okay</Typography>
+            <Typography>{titleContent}</Typography>
           </Box>
           {onCloseAtHeader ? (
             <IconButton

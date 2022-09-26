@@ -1,3 +1,2 @@
-import FormCreatePost from './FormCreatePost';
-
-export default FormCreatePost;
+export * from './FormCreatePost';
+export { default } from './FormCreatePost';
