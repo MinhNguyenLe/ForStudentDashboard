@@ -11,21 +11,23 @@ datasource db {
 }
 
 model WorkLocation {
-  id         Int      @id @default(autoincrement())
-  content    String
-  posts      Posts    @relation(fields: [post_id], references: [post_id])
-  post_id    Int
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
+  work_location_id         Int                        @id @default(autoincrement())
+  content                  String
+  posts                    Posts                      @relation(fields: [post_id], references: [post_id])
+  post_id                  Int
+  workLocationsAndHashtags WorkLocationsAndHashtags[]
+  created_at               DateTime                   @default(now())
+  updated_at               DateTime                   @default(now())
 }
 
 model TimeWorking {
-  id         Int      @id @default(autoincrement())
-  content    String
-  posts      Posts    @relation(fields: [post_id], references: [post_id])
-  post_id    Int
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
+  time_working_id         Int                       @id @default(autoincrement())
+  content                 String
+  posts                   Posts                     @relation(fields: [post_id], references: [post_id])
+  post_id                 Int
+  timesWorkingAndHashtags TimesWorkingAndHashtags[]
+  created_at              DateTime                  @default(now())
+  updated_at              DateTime                  @default(now())
 }
 
 model SalaryInformation {
@@ -49,11 +51,13 @@ model Comment {
 }
 
 model Hashtag {
-  hashtag_id     Int              @id @default(autoincrement())
-  postAndHashtag PostAndHashtag[]
-  content        String           @unique
-  created_at     DateTime         @default(now())
-  updated_at     DateTime         @default(now())
+  hashtag_id               Int                        @id @default(autoincrement())
+  postsAndHashtags         PostAndHashtag[]
+  workLocationsAndHashtags WorkLocationsAndHashtags[]
+  timesWorkingAndHashtags  TimesWorkingAndHashtags[]
+  content                  String                     @unique
+  created_at               DateTime                   @default(now())
+  updated_at               DateTime                   @default(now())
 }
 
 model Posts {
@@ -85,7 +89,26 @@ model PostAndHashtag {
   post_id    Int
   hashtag    Hashtag @relation(fields: [hashtag_id], references: [hashtag_id])
   hashtag_id Int
+
   @@id([post_id, hashtag_id])
+}
+
+model WorkLocationsAndHashtags {
+  work_location    WorkLocation @relation(fields: [work_location_id], references: [work_location_id])
+  work_location_id Int
+  hashtag          Hashtag      @relation(fields: [hashtag_id], references: [hashtag_id])
+  hashtag_id       Int
+
+  @@id([work_location_id, hashtag_id])
+}
+
+model TimesWorkingAndHashtags {
+  time_working    TimeWorking @relation(fields: [time_working_id], references: [time_working_id])
+  time_working_id Int
+  hashtag         Hashtag     @relation(fields: [hashtag_id], references: [hashtag_id])
+  hashtag_id      Int
+
+  @@id([time_working_id, hashtag_id])
 }
 
 model User {

@@ -13,6 +13,7 @@
     "@emotion/react": "11.9.0",
     "@emotion/server": "11.4.0",
     "@emotion/styled": "11.8.1",
+    "@hookform/resolvers": "^2.9.8",
     "@mui/core": "5.0.0-alpha.54",
     "@mui/icons-material": "5.8.2",
     "@mui/lab": "5.0.0-alpha.84",
@@ -40,7 +41,9 @@
     "react-apexcharts": "1.4.0",
     "react-custom-scrollbars-2": "4.4.0",
     "react-dom": "17.0.2",
-    "typescript": "4.7.3"
+    "react-hook-form": "^7.36.1",
+    "typescript": "4.7.3",
+    "yup": "^0.32.11"
   },
   "scripts": {
     "dev": "next dev -p 3005",

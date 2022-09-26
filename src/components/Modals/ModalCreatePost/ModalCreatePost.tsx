@@ -1,34 +1,62 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import Slide from '@mui/material/Slide';
-import { TransitionProps } from '@mui/material/transitions';
 import FormCreatePost from '@/components/Forms/FormCreatePost';
 import ButtonCreatePost from './ButtonCreatePost';
-import { Divider } from '@mui/material';
 import reUseFetcher from '@/utils/fetcher';
 
-const Transition = React.forwardRef(function Transition(
-  props: TransitionProps & {
-    children: React.ReactElement<any, any>;
-  },
-  ref: React.Ref<unknown>
-) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import { useForm } from 'react-hook-form';
+import HookFormProvider from '@/components/ComponentBase/HookFormProvider';
+
+import UseDialog from '@/hooks/useDialog';
+
+import {
+  Posts,
+  StatusPost,
+  TimeWorking,
+  SalaryInformation,
+  WorkLocation,
+  User,
+  Hashtag
+  // Contact
+} from '@prisma/client';
+import SDialog from '@/components/ComponentBase/SDialog';
+
+interface HookFormCreatePost {
+  description: Posts['description'];
+  jobName: Posts['job_name'];
+  jobRequirement?: Posts['job_requirement'];
+  quantity?: Posts['quantity'];
+  status: StatusPost;
+  timeWorking: Array<TimeWorking['content']>;
+  salaryInformation: Array<SalaryInformation['content']>;
+  workLocations: Array<WorkLocation['content']>;
+  hashtags: Array<Hashtag['content']>;
+  userId: User['user_id'];
+}
+
+const schema = yup
+  .object()
+  .shape({
+    name: yup.string().required(),
+    age: yup.number().required()
+  })
+  .required();
 
 export default function ModalCreatePost() {
-  const [open, setOpen] = React.useState(false);
+  const { open, onCloseDialog, onOpenDialog } = UseDialog(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  const methodCreatePost = useForm<HookFormCreatePost>({
+    resolver: yupResolver(schema)
+  });
 
-  const handleClose = () => {
-    setOpen(false);
+  const {
+    handleSubmit,
+    formState: { isSubmitting }
+  } = methodCreatePost;
+
+  const onSubmitPost = () => {
+    console.log('submitting');
 
     // Test fetcher successful
     reUseFetcher({ prefix: '/api/posts/get-all', method: 'GET' })
@@ -37,26 +65,19 @@ export default function ModalCreatePost() {
   };
 
   return (
-    <div>
-      <ButtonCreatePost onClick={handleClickOpen} />
-      <Dialog
+    <HookFormProvider
+      methods={methodCreatePost}
+      {...{ onSubmit: handleSubmit(onSubmitPost) }}
+    >
+      <ButtonCreatePost onClick={onOpenDialog} />
+      <SDialog
+        onCloseAtHeader={() => {}}
         open={open}
-        TransitionComponent={Transition}
-        keepMounted
-        onClose={handleClose}
-        aria-describedby="alert-dialog-slide-description"
+        onCloseDialog={onCloseDialog}
+        isSubmitting={isSubmitting}
       >
-        <DialogTitle>Create post okay</DialogTitle>
-        <Divider />
-        <DialogContent>
-          <FormCreatePost />
-        </DialogContent>
-        <Divider />
-        <DialogActions>
-          <Button onClick={handleClose}>Save</Button>
-          <Button onClick={handleClose}>Cancel</Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+        <FormCreatePost />
+      </SDialog>
+    </HookFormProvider>
   );
 }
