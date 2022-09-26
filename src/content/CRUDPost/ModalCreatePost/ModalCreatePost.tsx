@@ -1,5 +1,5 @@
 import * as React from 'react';
-import FormCreatePost from '@/components/Forms/FormCreatePost';
+import FormCreatePost from '@/content/CRUDPost/FormCreatePost';
 import ButtonCreatePost from './ButtonCreatePost';
 import reUseFetcher from '@/utils/fetcher';
 
@@ -22,7 +22,7 @@ import {
 } from '@prisma/client';
 import SDialog from '@/components/ComponentBase/SDialog';
 
-interface HookFormCreatePost {
+export interface HookFormCreatePost {
   description: Posts['description'];
   jobName: Posts['job_name'];
   jobRequirement?: Posts['job_requirement'];
@@ -38,43 +38,58 @@ interface HookFormCreatePost {
 const schema = yup
   .object()
   .shape({
-    name: yup.string().required(),
-    age: yup.number().required()
+    jobName: yup.string().required(),
+    workLocations: yup.array().of(yup.string()).required(),
+    timeWorking: yup.array().of(yup.string()).required()
   })
   .required();
+
+const defaultValues = {
+  jobName: '',
+  workLocations: [''],
+  timeWorking: ['']
+};
+
+export type TestName = 'jobName' | 'workLocations' | 'timeWorking';
 
 export default function ModalCreatePost() {
   const { open, onCloseDialog, onOpenDialog } = UseDialog(false);
 
   const methodCreatePost = useForm<HookFormCreatePost>({
-    resolver: yupResolver(schema)
+    resolver: yupResolver(schema),
+    defaultValues
   });
 
   const {
     handleSubmit,
-    formState: { isSubmitting }
+    formState: { isSubmitting },
+    getValues
   } = methodCreatePost;
 
   const onSubmitPost = () => {
-    console.log('submitting');
+    console.log('submitting', getValues());
 
     // Test fetcher successful
-    reUseFetcher({ prefix: '/api/posts/get-all', method: 'GET' })
-      .then((r) => console.log(r))
-      .catch((e) => console.log(e));
+    // reUseFetcher({ prefix: '/api/posts/get-all', method: 'GET' })
+    //   .then((r) => console.log(r))
+    //   .catch((e) => console.log(e));
   };
 
   return (
     <HookFormProvider
       methods={methodCreatePost}
-      {...{ onSubmit: handleSubmit(onSubmitPost) }}
+      // formProps={{ onSubmit: handleSubmit(onSubmitPost) }}
+      onSubmit={handleSubmit(onSubmitPost)}
     >
       <ButtonCreatePost onClick={onOpenDialog} />
       <SDialog
         titleContent="Create post okay"
         onCloseAtHeader={() => {}}
         open={open}
-        onCloseDialog={onCloseDialog}
+        onCloseDialog={() => {
+          onCloseDialog();
+          console.log('submitting', getValues());
+        }}
         isSubmitting={isSubmitting}
       >
         <FormCreatePost />

@@ -30,6 +30,7 @@ interface SDialogProps
   isSubmitting?: boolean;
   onCloseAtHeader?: () => void;
   titleContent: string;
+  onSubmit?: () => void;
 }
 
 export default function SDialog({

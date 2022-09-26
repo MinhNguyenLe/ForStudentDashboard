@@ -1,11 +1,25 @@
 import { dotList } from '@/utils/constants';
-import Typography from '@mui/material/Typography';
+import Typography, { TypographyProps } from '@mui/material/Typography';
 
-const ListTypographyWithDot = (contents: string[]) => {
+export interface ListTypographyWithDotProps extends TypographyProps {
+  contents: string[];
+}
+
+const ListTypographyWithDot = ({
+  contents,
+  ...props
+}: ListTypographyWithDotProps) => {
   return (
     <>
-      {contents.map((content,index) => (
-        <Typography key={content + index} mr="4px">{dotList + content}</Typography>
+      {contents.map((content, index) => (
+        <Typography
+          key={content + index}
+          mr="4px"
+          variant="subtitle2"
+          {...props}
+        >
+          {dotList + content}
+        </Typography>
       ))}
     </>
   );

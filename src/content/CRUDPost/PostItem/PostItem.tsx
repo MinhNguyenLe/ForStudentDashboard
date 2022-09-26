@@ -57,11 +57,6 @@ function PostItem() {
           </>
         }
       />
-      <Box px={3} pb={2}>
-        <Typography variant="h4" fontWeight="normal">
-          Description ...
-        </Typography>
-      </Box>
       <CardMedia
         sx={{ minHeight: 280 }}
         image="/static/images/placeholders/covers/6.jpg"

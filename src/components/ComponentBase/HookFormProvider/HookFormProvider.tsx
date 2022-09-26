@@ -2,7 +2,7 @@ import Box from '@mui/material/Box';
 import { FormHTMLAttributes, PropsWithChildren } from 'react';
 
 import {
-  FormProvider as Form,
+  FormProvider,
   FieldValues,
   UseFormReturn,
   useForm
@@ -12,20 +12,22 @@ interface FormProviderProps<T extends FieldValues> {
   formProps?: FormHTMLAttributes<HTMLFormElement>;
   methods?: UseFormReturn<T>;
   shouldPressKey?: boolean;
+  onSubmit?: () => void;
 }
 
 const HookFormProvider = <T extends FieldValues>({
   children,
   formProps = {},
   methods,
-  shouldPressKey
+  shouldPressKey,
+  onSubmit
 }: PropsWithChildren<FormProviderProps<T>>) => {
   const anotherMethods = useForm<T>();
   const finalMethods = methods ? methods : anotherMethods;
 
   return (
-    <Form {...finalMethods}>
-      <form {...formProps}>
+    <FormProvider {...finalMethods}>
+      <form onSubmit={onSubmit} {...formProps}>
         {children}
 
         {/* Allow enter to submit */}
@@ -35,7 +37,7 @@ const HookFormProvider = <T extends FieldValues>({
           </Box>
         ) : null}
       </form>
-    </Form>
+    </FormProvider>
   );
 };
 
