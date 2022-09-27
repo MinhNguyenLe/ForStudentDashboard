@@ -10,5 +10,5 @@ export * from './LogoSign';
 export * from './Logo';
 export * from './PageTitle';
 export * from './Footer';
-export * from './ComponentBase/HookFormProvider';
-export * from './ComponentBase/SDialog';
+export * from './ComponentBase/RHookFormProvider';
+export * from './ComponentBase/RDialog';
