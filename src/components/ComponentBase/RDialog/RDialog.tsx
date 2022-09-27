@@ -5,7 +5,7 @@ import Dialog, { DialogProps } from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
-import { UseDialogReturn } from '@/hooks/useDialog';
+import { UseReUseDialogReturn } from '@/hooks/useReUseDialog';
 import {
   DialogTitle,
   Typography,
@@ -24,23 +24,23 @@ const Transition = forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-interface SDialogProps
+interface RDialogProps
   extends DialogProps,
-    Pick<UseDialogReturn, 'open' | 'onCloseDialog'> {
+    Pick<UseReUseDialogReturn, 'open' | 'onCloseDialog'> {
   isSubmitting?: boolean;
   onCloseAtHeader?: () => void;
   titleContent: string;
   onSubmit?: () => void;
 }
 
-export default function SDialog({
+export default function RDialog({
   children,
   open,
   onCloseDialog,
   isSubmitting = false,
   onCloseAtHeader,
   titleContent
-}: PropsWithChildren<SDialogProps>) {
+}: PropsWithChildren<RDialogProps>) {
   return (
     <Dialog
       open={open}
@@ -71,7 +71,11 @@ export default function SDialog({
       <DialogContent>{children}</DialogContent>
       <Divider />
       <DialogActions>
-        <Button type="submit" onClick={onCloseDialog}>
+        <Button
+          form="form1"
+          type="submit"
+          onClick={onCloseDialog}
+        >
           {isSubmitting ? 'Saving' : 'Save'}
         </Button>
         <Button onClick={onCloseDialog}>Cancel</Button>

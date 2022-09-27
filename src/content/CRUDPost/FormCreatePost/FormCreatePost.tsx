@@ -17,12 +17,12 @@ const formDataSkeleton: LineInPostContentProps[] = [
     inFormCreate: true,
     name: 'workLocations'
   },
-  {
-    label: 'Time working',
-    title: 'Time working',
-    inFormCreate: true,
-    name: 'timeWorking'
-  }
+  // {
+  //   label: 'Time working',
+  //   title: 'Time working',
+  //   inFormCreate: true,
+  //   name: 'timeWorking'
+  // }
 ];
 
 export default function FormCreatePost() {

@@ -1,8 +1,9 @@
+import RTextFieldWithController from '@/components/Input/RTextFieldWithController';
 import ListTypographyWithDot, {
   ListTypographyWithDotProps
 } from '@/components/ListTypographyWithDot';
-import { Box, TextField, Typography } from '@mui/material';
-import { useFormContext } from 'react-hook-form';
+import { Box, Typography } from '@mui/material';
+import { useFormContext, Controller } from 'react-hook-form';
 import { HookFormCreatePost, TestName } from '../ModalCreatePost';
 
 export interface LineInPostContentProps {
@@ -23,30 +24,27 @@ const LineInPostContent = ({
   name,
   ...props
 }: LineInPostContentProps) => {
-  const { setValue } = useFormContext<HookFormCreatePost>();
 
   const renderTextField = () => {
     if (inFormCreate) {
       if (isMultipleLine) {
         return (
-          <TextField
+          <RTextFieldWithController<HookFormCreatePost>
             name={name}
             multiline
             size="small"
             label={label}
             fullWidth
-            onChange={(e) => setValue(name, e.target.value)}
           />
         );
       }
 
       return (
-        <TextField
+        <RTextFieldWithController<HookFormCreatePost>
           name={name}
           size="small"
           label={label}
           fullWidth
-          onChange={(e) => setValue(name, e.target.value)}
         />
       );
     }
