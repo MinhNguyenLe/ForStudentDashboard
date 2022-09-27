@@ -10,24 +10,33 @@ import {
 
 interface FormProviderProps<T extends FieldValues> {
   formProps?: FormHTMLAttributes<HTMLFormElement>;
+  onFormSubmit?: () => void;
   methods?: UseFormReturn<T>;
   shouldPressKey?: boolean;
-  onSubmit?: () => void;
 }
 
-const HookFormProvider = <T extends FieldValues>({
+const RHookFormProvider = <T extends FieldValues>({
   children,
-  formProps = {},
+  onFormSubmit,
   methods,
-  shouldPressKey,
-  onSubmit
+  formProps = {},
+  shouldPressKey
 }: PropsWithChildren<FormProviderProps<T>>) => {
   const anotherMethods = useForm<T>();
   const finalMethods = methods ? methods : anotherMethods;
 
   return (
     <FormProvider {...finalMethods}>
-      <form onSubmit={onSubmit} {...formProps}>
+      <form
+        id="form1"
+        onSubmit={(e) => {
+          console.log(1);
+          onFormSubmit();
+
+          e.preventDefault()
+        }}
+        {...formProps}
+      >
         {children}
 
         {/* Allow enter to submit */}
@@ -41,4 +50,4 @@ const HookFormProvider = <T extends FieldValues>({
   );
 };
 
-export default HookFormProvider;
+export default RHookFormProvider;

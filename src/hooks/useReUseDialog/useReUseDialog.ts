@@ -1,12 +1,12 @@
 import { useState } from 'react';
 
-export interface UseDialogReturn {
+export interface UseReUseDialogReturn {
   open: boolean;
   onOpenDialog: () => void;
   onCloseDialog: () => void;
 }
 
-const useDialog = (defaultOpen: boolean = false): UseDialogReturn => {
+const useReUseDialog = (defaultOpen: boolean = false): UseReUseDialogReturn => {
   const [open, setOpen] = useState<boolean>(defaultOpen);
 
   const onOpenDialog = () => {
@@ -24,4 +24,4 @@ const useDialog = (defaultOpen: boolean = false): UseDialogReturn => {
   };
 };
 
-export default useDialog;
+export default useReUseDialog;
