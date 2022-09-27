@@ -93,11 +93,11 @@ model Hashtag {
 
 model Posts {
   post_id            Int                 @id @default(autoincrement())
-  description        String
-  job_name           String
-  job_requirement    String              @default("")
-  quantity           Int                 @default(1)
-  status             StatusPost          @default(OPEN)
+  description        String?             @default("")
+  job_name           String?             @default("")
+  job_requirement    String?             @default("")
+  quantity           Int?                @default(1)
+  status             StatusPost?         @default(OPEN)
   time_working       TimeWorking[]
   salary_information SalaryInformation[]
   work_locations     WorkLocation[]
@@ -173,8 +173,8 @@ model Profile {
   profile_id Int         @id @default(autoincrement())
   user       User        @relation(fields: [user_id], references: [user_id])
   user_id    Int         @unique
-  permission Permission  @default(STUDENT)
-  username   String
+  permission Permission? @default(STUDENT)
+  username   String?     @default("")
   full_name  String?     @default("")
   contacts   Contact[]
   avatar     String?     @default("")

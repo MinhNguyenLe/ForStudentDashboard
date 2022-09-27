@@ -1,15 +1,8 @@
 import { TextField, TextFieldProps } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
 
-interface RTextFieldWithControllerProps extends Omit<TextFieldProps, 'name'> {
-  name: string;
-}
-
-function RTextFieldWithController({
-  name,
-  ...props
-}: RTextFieldWithControllerProps) {
-  const { control } = useFormContext();
+function RTextFieldWithController({ name, ...props }: TextFieldProps) {
+  const { control ,register} = useFormContext();
 
   return (
     <Controller
@@ -19,8 +12,8 @@ function RTextFieldWithController({
         <TextField
           {...field}
           error={!!error}
-          helperText={error['message']}
-          // {...props}
+          helperText={!!error ? error['message'] : null}
+          {...props}
         />
       )}
     />
