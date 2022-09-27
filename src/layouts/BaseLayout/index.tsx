@@ -12,7 +12,7 @@ const BaseLayout: FC<BaseLayoutProps> = ({ children }) => {
       sx={{
         display: 'flex',
         flex: 1,
-        height: '100%'
+        height: '100vh'
       }}
     >
       {children}
