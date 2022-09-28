@@ -16,7 +16,7 @@ const formDataSkeleton: LineInPostContentProps[] = [
     title: 'Work locations',
     inFormCreate: true,
     name: 'workLocations'
-  },
+  }
   // {
   //   label: 'Time working',
   //   title: 'Time working',

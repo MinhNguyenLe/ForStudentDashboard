@@ -2,7 +2,7 @@ import { TextField, TextFieldProps } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
 
 function RTextFieldWithController({ name, ...props }: TextFieldProps) {
-  const { control ,register} = useFormContext();
+  const { control } = useFormContext();
 
   return (
     <Controller

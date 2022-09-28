@@ -1,5 +1,5 @@
 import * as React from 'react';
-import FormCreatePost from '@/content/CRUDPost/FormCreatePost';
+import FormCreatePost from '@/content/CRUDPost/components/FormCreatePost';
 import ButtonCreatePost from './ButtonCreatePost';
 import reUseFetcher from '@/utils/fetcher';
 
@@ -63,16 +63,15 @@ export default function ModalCreatePost() {
 
   const {
     handleSubmit,
-    formState: { isSubmitting, errors },
+    formState: { isSubmitting, errors }
   } = methodCreatePost;
 
   const onSubmitPost = (data) => {
-    console.log(data, 'submitting ---------- ');
+    onCloseDialog();
 
-    // Test fetcher successful
-    // reUseFetcher({ prefix: '/api/posts/get-all', method: 'GET' })
-    //   .then((r) => console.log(r))
-    //   .catch((e) => console.log(e));
+    reUseFetcher({ prefix: '/api/posts/create', method: 'POST', data })
+      .then((r) => console.log(r))
+      .catch((e) => console.log(e));
   };
 
   return (
