@@ -71,11 +71,7 @@ export default function RDialog({
       <DialogContent>{children}</DialogContent>
       <Divider />
       <DialogActions>
-        <Button
-          form="form1"
-          type="submit"
-          onClick={onCloseDialog}
-        >
+        <Button form="form1" type="submit">
           {isSubmitting ? 'Saving' : 'Save'}
         </Button>
         <Button onClick={onCloseDialog}>Cancel</Button>

@@ -1,30 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next/types';
 import prismaClientV1 from 'backend/prisma-client';
 
-import {
-  Posts,
-  StatusPost,
-  TimeWorking,
-  SalaryInformation,
-  WorkLocation,
-  User,
-  Hashtag
-  // Contact
-} from '@prisma/client';
-
-interface RequestBodyCreatePost {
-  description: Posts['description'];
-  jobName: Posts['job_name'];
-  jobRequirement?: Posts['job_requirement'];
-  quantity?: Posts['quantity'];
-  status: StatusPost;
-  timeWorking: Array<TimeWorking['content']>;
-  salaryInformation: Array<SalaryInformation['content']>;
-  workLocations: Array<WorkLocation['content']>;
-  hashtags: Array<Hashtag['content']>;
-  userId: User['user_id'];
-  // contact: Array<Contact['content']>;
-}
+import { RequestBodyCreatePost } from 'utils/types';
 
 interface OverrideNextApiRequest extends Omit<NextApiRequest, 'body'> {
   body: RequestBodyCreatePost;
@@ -41,7 +18,6 @@ export default function createPosts(
   }
 
   const {
-    description,
     jobName,
     jobRequirement,
     quantity,
@@ -54,52 +30,59 @@ export default function createPosts(
     // contact
   } = req.body;
 
-  const createTimeWorking = timeWorking.map((content) => ({
-    content
-  }));
+  const createTimeWorking = timeWorking?.length
+    ? timeWorking.map((content) => ({
+        content
+      }))
+    : null;
 
-  const createWorkLocations = workLocations.map((content) => ({
-    content
-  }));
+  const createWorkLocations = workLocations?.length
+    ? workLocations.map((content) => ({
+        content
+      }))
+    : null;
 
-  const createSalaryInformation = salaryInformation.map((content) => ({
-    content
-  }));
+  const createSalaryInformation = salaryInformation?.length
+    ? salaryInformation.map((content) => ({
+        content
+      }))
+    : null;
 
-  const createHashtags = hashtags.map((content) => {
-    return {
-      hashtag: {
-        create: {
-          content
-        }
-      }
-    };
-  });
+  const createHashtags = hashtags?.length
+    ? hashtags.map((content) => {
+        return {
+          hashtag: {
+            create: {
+              content
+            }
+          }
+        };
+      })
+    : null;
 
   prismaClientV1.posts
     .create({
       data: {
-        description,
         job_name: jobName,
-        job_requirement: jobRequirement,
-        quantity,
-        status,
+        job_requirement: jobRequirement || '',
+        quantity: quantity || '1',
+        status: status || 'OPEN',
         user: {
           connect: {
-            user_id: userId
+            user_id: userId || 1
           }
         },
         time_working: {
-          create: createTimeWorking
+          create: createTimeWorking || []
         },
         work_locations: {
-          create: createWorkLocations
+          create: createWorkLocations || []
         },
         salary_information: {
-          create: createSalaryInformation
+          create: createSalaryInformation || []
         },
         postAndHashtag: {
-          create: createHashtags
+          create: createHashtags || []
         }
       },
       include: {

@@ -16,6 +16,14 @@ import { styled } from '@mui/material/styles';
 import MoreHorizTwoToneIcon from '@mui/icons-material/MoreHorizTwoTone';
 import CommentTwoToneIcon from '@mui/icons-material/CommentTwoTone';
 import Text from '@/components/Text';
+import {
+  PostAndHashtag,
+  Posts,
+  SalaryInformation,
+  TimeWorking,
+  WorkLocation
+} from '@prisma/client';
+import LineInPostContent from '../LineInPostContent';
 
 const CardActionsWrapper = styled(CardActions)(
   ({ theme }) => `
@@ -24,7 +32,18 @@ const CardActionsWrapper = styled(CardActions)(
 `
 );
 
-function PostItem() {
+export type PostFromResponse = Posts & {
+  time_working: TimeWorking[];
+  salary_information: SalaryInformation[];
+  work_locations: WorkLocation[];
+  postAndHashtag: PostAndHashtag[];
+};
+
+export interface PostItemProps {
+  post: PostFromResponse;
+}
+
+function PostItem({ post }: PostItemProps) {
   return (
     <Card>
       <CardHeader
@@ -64,40 +83,24 @@ function PostItem() {
       />
       <Box p={3}>
         <Typography variant="h2" sx={{ pb: 1 }}>
-          Job's name
+          {post.job_name}
         </Typography>
-        <Typography variant="subtitle2" component="div">
-          <Typography variant="subtitle2" component="span" color="primary">
-            Location job
-          </Typography>{' '}
-          • District 2 • District 3 • District 4
-        </Typography>
-        <Typography variant="subtitle2" component="div">
-          <Typography variant="subtitle2" component="span" color="primary">
-            Address
-          </Typography>{' '}
-          • 11/8 Ton Duc Thang Street • 11/8 Ton Duc Thang Street • 11/8 Ton Duc
-          Thang Street • 11/8 Ton Duc Thang Street
-        </Typography>
-        <Typography variant="subtitle2">
-          <Typography variant="subtitle2" component="span" color="primary">
-            underline="hover" Shift
-          </Typography>{' '}
-          • From 12:00 to 18:00 • From 12:00 to 18:00 • From 12:00 to 18:00
-        </Typography>
-        <Typography variant="subtitle2" component="div">
-          <Typography variant="subtitle2" component="span" color="primary">
-            Contact me
-          </Typography>{' '}
-          • Zalo: 0919 188 756 • Phone: 0919 188 756 • Facebook:
-          http://localhost:3005/feature-v1/crud-posts
-        </Typography>
-        <Typography variant="subtitle2" component="div">
-          <Typography variant="subtitle2" component="span" color="primary">
-            Count
-          </Typography>{' '}
-          • 5 members
-        </Typography>
+        <LineInPostContent
+          title="Time working"
+          contents={(() => post.time_working.map((item) => item.content))()}
+        />
+        <LineInPostContent
+          title="Work locations"
+          contents={(() => post.work_locations.map((item) => item.content))()}
+        />
+        <LineInPostContent
+          title="Salary information"
+          contents={(() =>
+            post.salary_information.map((item) => item.content))()}
+        />
+        <LineInPostContent title="Count of member" contents={[post.quantity]} />
+        <LineInPostContent title="Contact me" contents={[]} />
+        <LineInPostContent title="Job's requirement" contents={[]} />
       </Box>
       <Divider />
       <CardActionsWrapper

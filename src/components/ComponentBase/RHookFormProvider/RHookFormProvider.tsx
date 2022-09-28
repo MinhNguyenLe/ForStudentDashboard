@@ -33,7 +33,7 @@ const RHookFormProvider = <T extends FieldValues>({
           console.log(1);
           onFormSubmit();
 
-          e.preventDefault()
+          e.preventDefault();
         }}
         {...formProps}
       >

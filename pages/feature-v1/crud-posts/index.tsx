@@ -5,8 +5,7 @@ import PageTitleWrapper from '@/components/PageTitleWrapper';
 import { Container, Grid } from '@mui/material';
 import Footer from '@/components/Footer';
 
-import ModalCreatePost from '@/content/CRUDPost/ModalCreatePost';
-import PostItem from '@/content/CRUDPost/PostItem';
+import CRUDPost from '@/content/CRUDPost';
 
 function ManagementUserSettings() {
   return (
@@ -25,18 +24,7 @@ function ManagementUserSettings() {
           alignItems="stretch"
           spacing={3}
         >
-          <Grid item xs={12}>
-            <ModalCreatePost />
-          </Grid>
-          <Grid item xs={12}>
-            <PostItem />
-          </Grid>
-          <Grid item xs={12}>
-            <PostItem />
-          </Grid>
-          <Grid item xs={12}>
-            <PostItem />
-          </Grid>
+          <CRUDPost />
         </Grid>
       </Container>
       <Footer />

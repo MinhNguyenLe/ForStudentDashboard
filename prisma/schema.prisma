@@ -62,7 +62,7 @@ model TimeWorking {
 
 model SalaryInformation {
   salary_information_id Int          @id @default(autoincrement())
-  content               Int
+  content               String
   unit                  UnitCurrency @default(USD)
   posts                 Posts        @relation(fields: [post_id], references: [post_id])
   post_id               Int
@@ -93,11 +93,10 @@ model Hashtag {
 
 model Posts {
   post_id            Int                 @id @default(autoincrement())
-  description        String
   job_name           String
-  job_requirement    String              @default("")
-  quantity           Int                 @default(1)
-  status             StatusPost          @default(OPEN)
+  job_requirement    String?             @default("")
+  quantity           String?             @default("")
+  status             StatusPost?         @default(OPEN)
   time_working       TimeWorking[]
   salary_information SalaryInformation[]
   work_locations     WorkLocation[]
@@ -173,8 +172,8 @@ model Profile {
   profile_id Int         @id @default(autoincrement())
   user       User        @relation(fields: [user_id], references: [user_id])
   user_id    Int         @unique
-  permission Permission  @default(STUDENT)
-  username   String
+  permission Permission? @default(STUDENT)
+  username   String?     @default("")
   full_name  String?     @default("")
   contacts   Contact[]
   avatar     String?     @default("")

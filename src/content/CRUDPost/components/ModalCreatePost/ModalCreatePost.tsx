@@ -1,7 +1,6 @@
 import * as React from 'react';
-import FormCreatePost from '@/content/CRUDPost/FormCreatePost';
+import FormCreatePost from '@/content/CRUDPost/components/FormCreatePost';
 import ButtonCreatePost from './ButtonCreatePost';
-import reUseFetcher from '@/utils/fetcher';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -12,46 +11,44 @@ import useDialog from '@/hooks/useReUseDialog';
 
 import {
   Posts,
-  StatusPost,
+  // StatusPost,
   TimeWorking,
   SalaryInformation,
-  WorkLocation,
-  User,
-  Hashtag
+  WorkLocation
+  // User,
+  // Hashtag
   // Contact
 } from '@prisma/client';
 import RDialog from '@/components/ComponentBase/RDialog';
-import { ErrorMessage } from '@hookform/error-message';
+import { createPost } from '../../api';
 
 export interface HookFormCreatePost {
-  description?: Posts['description'];
   jobName: Posts['job_name'];
   jobRequirement?: Posts['job_requirement'];
   quantity?: Posts['quantity'];
-  status?: StatusPost;
-  timeWorking?: Array<TimeWorking['content']>;
-  salaryInformation?: Array<SalaryInformation['content']>;
-  workLocations?: Array<WorkLocation['content']>;
-  hashtags?: Array<Hashtag['content']>;
-  userId?: User['user_id'];
+  timeWorking?: TimeWorking['content'];
+  salaryInformation?: SalaryInformation['content'];
+  workLocations?: WorkLocation['content'];
+  // hashtags?: Array<Hashtag['content']>;
 }
 
 const schema = yup
   .object()
   .shape({
     jobName: yup.string().required()
-    // workLocations: yup.array().of(yup.string()).required()
-    // timeWorking: yup.array().of(yup.string()).required()
   })
   .required();
 
 const defaultValues: HookFormCreatePost = {
-  jobName: ''
-  // workLocations: ''
-  // timeWorking: ""
+  jobName: '',
+  jobRequirement: '',
+  quantity: '',
+  timeWorking: '',
+  salaryInformation: '',
+  workLocations: ''
 };
 
-export type TestName = 'jobName' | 'workLocations' | 'timeWorking';
+export type ListFieldsName = keyof typeof defaultValues;
 
 export default function ModalCreatePost() {
   const { open, onCloseDialog, onOpenDialog } = useDialog(false);
@@ -63,17 +60,16 @@ export default function ModalCreatePost() {
 
   const {
     handleSubmit,
-    formState: { isSubmitting, errors },
+    formState: { isSubmitting }
   } = methodCreatePost;
 
-  const onSubmitPost = (data) => {
-    console.log(data, 'submitting ---------- ');
+  async function onSubmitPost(data: HookFormCreatePost) {
+    onCloseDialog();
 
-    // Test fetcher successful
-    // reUseFetcher({ prefix: '/api/posts/get-all', method: 'GET' })
-    //   .then((r) => console.log(r))
-    //   .catch((e) => console.log(e));
-  };
+    const newPost = await createPost(data);
+
+    console.log(newPost);
+  }
 
   return (
     <RHookFormProvider
@@ -82,18 +78,13 @@ export default function ModalCreatePost() {
     >
       <ButtonCreatePost onClick={onOpenDialog} />
       <RDialog
-        titleContent="Create post okay"
-        onCloseAtHeader={() => {}}
+        titleContent="Create post"
+        onCloseAtHeader={() => {}} // make sure always show icon close at header
         open={open}
         onCloseDialog={onCloseDialog}
         isSubmitting={isSubmitting}
       >
         <FormCreatePost />
-        <ErrorMessage
-          errors={errors}
-          name="singleErrorInput"
-          render={({ message }) => <p>{message}</p>}
-        />
       </RDialog>
     </RHookFormProvider>
   );
