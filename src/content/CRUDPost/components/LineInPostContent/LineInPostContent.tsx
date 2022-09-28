@@ -2,7 +2,7 @@ import RTextFieldWithController from '@/components/Input/RTextFieldWithControlle
 import ListTypographyWithDot, {
   ListTypographyWithDotProps
 } from '@/components/ListTypographyWithDot';
-import { Box, TextFieldProps, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 export interface LineInPostContentProps {
   contents?: ListTypographyWithDotProps['contents'];
@@ -11,6 +11,7 @@ export interface LineInPostContentProps {
   isMultipleLine?: boolean;
   label: string;
   name?: string;
+  onKeyEnter?: () => void;
 }
 
 const LineInPostContent = ({
@@ -20,6 +21,7 @@ const LineInPostContent = ({
   contents = [],
   label,
   name,
+  onKeyEnter,
   ...props
 }: LineInPostContentProps) => {
   const renderTextField = () => {
@@ -42,6 +44,11 @@ const LineInPostContent = ({
           size="small"
           label={label}
           fullWidth
+          onKeyPress={(ev) => {
+            if (ev.key === 'Enter') {
+              onKeyEnter?.();
+            }
+          }}
         />
       );
     }

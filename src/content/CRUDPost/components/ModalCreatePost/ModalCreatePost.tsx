@@ -31,7 +31,7 @@ export interface HookFormCreatePost {
   status?: StatusPost;
   timeWorking?: Array<TimeWorking['content']>;
   salaryInformation?: Array<SalaryInformation['content']>;
-  workLocations?: Array<WorkLocation['content']>;
+  workLocations?: WorkLocation['content'];
   hashtags?: Array<Hashtag['content']>;
   userId?: User['user_id'];
 }
@@ -39,15 +39,15 @@ export interface HookFormCreatePost {
 const schema = yup
   .object()
   .shape({
-    jobName: yup.string().required()
-    // workLocations: yup.array().of(yup.string()).required()
+    jobName: yup.string().required(),
+    workLocations: yup.string().required(),
     // timeWorking: yup.array().of(yup.string()).required()
   })
   .required();
 
 const defaultValues: HookFormCreatePost = {
-  jobName: ''
-  // workLocations: ''
+  jobName: '',
+  workLocations: ''
   // timeWorking: ""
 };
 

@@ -6,20 +6,20 @@ import { RequestBodyCreatePost } from 'utils/types';
 
 export interface PostState {
   value: number;
-  fromCreate: RequestBodyCreatePost;
+  formCreate: RequestBodyCreatePost;
 }
 
 const initialState: PostState = {
   value: 0,
-  fromCreate: {
+  formCreate: {
     description: '',
     jobName: '',
     jobRequirement: '',
     quantity: 1,
     status: 'OPEN',
+    workLocations: [],
     timeWorking: [],
     salaryInformation: [],
-    workLocations: [],
     hashtags: [],
     userId: 1
   }
@@ -42,26 +42,20 @@ export const incrementAsync = createAsyncThunk(
 export const postSlice = createSlice({
   name: 'post',
   initialState,
-  // The `reducers` field lets us define reducers and generate associated actions
+  // Redux Toolkit allows us to write "mutating" logic in reducers. It
+  // doesn't actually mutate the state because it uses the Immer library,
+  // which detects changes to a "draft state" and produces a brand new
+  // immutable state based off those changes
   reducers: {
-    increment: (state) => {
-      // Redux Toolkit allows us to write "mutating" logic in reducers. It
-      // doesn't actually mutate the state because it uses the Immer library,
-      // which detects changes to a "draft state" and produces a brand new
-      // immutable state based off those changes
-      state.value += 1;
-    },
-    decrement: (state) => {
-      state.value -= 1;
-    },
-    // Use the PayloadAction type to declare the contents of `action.payload`
-    incrementByAmount: (state, action: PayloadAction<number>) => {
-      state.value += action.payload;
+    setWorkLocations: (state, { payload }: PayloadAction<string>) => {
+      if (payload) {
+        state.formCreate.workLocations.push(payload);
+      }
     }
   }
 });
 
-export const { increment, decrement, incrementByAmount } = postSlice.actions;
+export const { setWorkLocations } = postSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
@@ -74,8 +68,8 @@ export const incrementIfOdd =
   (amount: number): AppThunk =>
   (dispatch, getState) => {
     const currentValue = selectPost(getState());
-    if (currentValue % 2 === 1) {
-      dispatch(incrementByAmount(amount));
+    if (currentValue.value % 2 === 1) {
+      // dispatch(incrementByAmount(amount));
     }
   };
 

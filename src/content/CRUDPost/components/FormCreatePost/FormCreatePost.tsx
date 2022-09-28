@@ -1,37 +1,48 @@
-import { useAppDispatch, useAppSelector } from '@/store/hook';
+import { useAppSelector, useAppDispatch } from '@/store/hook';
 import Box from '@mui/material/Box';
-import { selectPost } from '../../postSlice';
+import { selectPost, setWorkLocations } from '@/content/CRUDPost/postSlice';
 import LineInPostContent, {
   LineInPostContentProps
 } from '../LineInPostContent';
-
-const formDataSkeleton: LineInPostContentProps[] = [
-  {
-    label: "Description for job's name",
-    isMultipleLine: true,
-    title: "Job's name",
-    inFormCreate: true,
-    name: 'jobName'
-  },
-  {
-    label: 'Work locations',
-    title: 'Work locations',
-    inFormCreate: true,
-    name: 'workLocations'
-  }
-  // {
-  //   label: 'Time working',
-  //   title: 'Time working',
-  //   inFormCreate: true,
-  //   name: 'timeWorking'
-  // }
-];
+import { useFormContext } from 'react-hook-form';
+import { HookFormCreatePost } from '../ModalCreatePost';
 
 export default function FormCreatePost() {
-  const dispatch = useAppDispatch();
   const post = useAppSelector(selectPost);
-  
-  console.log(post,"----")
+  const dispatch = useAppDispatch();
+
+  const { getValues, reset } = useFormContext<HookFormCreatePost>();
+
+  const formDataSkeleton: LineInPostContentProps[] = [
+    {
+      label: "Description for job's name",
+      isMultipleLine: true,
+      title: "Job's name",
+      inFormCreate: true,
+      name: 'jobName'
+    },
+    {
+      label: 'Work locations',
+      title: 'Work locations',
+      inFormCreate: true,
+      name: 'workLocations',
+      contents: post.formCreate.workLocations,
+      onKeyEnter: () => {
+        console.log(getValues('workLocations'));
+
+        dispatch(setWorkLocations(getValues('workLocations').trim()));
+        reset({
+          workLocations: ''
+        });
+      }
+    }
+    // {
+    //   label: 'Time working',
+    //   title: 'Time working',
+    //   inFormCreate: true,
+    //   name: 'timeWorking'
+    // }
+  ];
 
   return (
     <Box
