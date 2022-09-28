@@ -1,17 +1,27 @@
 import { useAppSelector, useAppDispatch } from '@/store/hook';
 import Box from '@mui/material/Box';
-import { selectPost, setWorkLocations } from '@/content/CRUDPost/postSlice';
+import {
+  selectPostFormCreate,
+  setWorkLocations
+} from '@/content/CRUDPost/postSlice';
 import LineInPostContent, {
   LineInPostContentProps
 } from '../LineInPostContent';
 import { useFormContext } from 'react-hook-form';
-import { HookFormCreatePost } from '../ModalCreatePost';
+import { HookFormCreatePost, ListFieldsName } from '../ModalCreatePost';
 
 export default function FormCreatePost() {
-  const post = useAppSelector(selectPost);
+  const formCreate = useAppSelector(selectPostFormCreate);
   const dispatch = useAppDispatch();
 
   const { getValues, reset } = useFormContext<HookFormCreatePost>();
+
+  function createCallbackOnEnter(name: ListFieldsName) {
+    dispatch(setWorkLocations((getValues(name) as string).trim()));
+    reset({
+      [name]: ''
+    });
+  }
 
   const formDataSkeleton: LineInPostContentProps[] = [
     {
@@ -22,26 +32,43 @@ export default function FormCreatePost() {
       name: 'jobName'
     },
     {
+      label: "Job's requirement",
+      isMultipleLine: true,
+      title: "Job's requirement",
+      inFormCreate: true,
+      name: 'jobRequirement'
+    },
+    {
+      label: 'Quantity',
+      isMultipleLine: true,
+      title: 'Quantity',
+      inFormCreate: true,
+      name: 'quantity'
+    },
+    {
       label: 'Work locations',
       title: 'Work locations',
       inFormCreate: true,
       name: 'workLocations',
-      contents: post.formCreate.workLocations,
-      onKeyEnter: () => {
-        console.log(getValues('workLocations'));
-
-        dispatch(setWorkLocations(getValues('workLocations').trim()));
-        reset({
-          workLocations: ''
-        });
-      }
+      contents: formCreate.workLocations,
+      onKeyEnter: () => createCallbackOnEnter('workLocations')
+    },
+    {
+      label: 'Time working',
+      title: 'Time working',
+      inFormCreate: true,
+      name: 'timeWorking',
+      contents: formCreate.timeWorking,
+      onKeyEnter: () => createCallbackOnEnter('timeWorking')
+    },
+    {
+      label: 'Salary Information',
+      title: 'Salary Information',
+      inFormCreate: true,
+      name: 'salaryInformation',
+      contents: formCreate.salaryInformation,
+      onKeyEnter: () => createCallbackOnEnter('salaryInformation')
     }
-    // {
-    //   label: 'Time working',
-    //   title: 'Time working',
-    //   inFormCreate: true,
-    //   name: 'timeWorking'
-    // }
   ];
 
   return (

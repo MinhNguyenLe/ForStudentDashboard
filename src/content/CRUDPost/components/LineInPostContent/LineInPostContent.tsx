@@ -9,7 +9,7 @@ export interface LineInPostContentProps {
   inFormCreate?: boolean;
   title: string;
   isMultipleLine?: boolean;
-  label: string;
+  label?: string;
   name?: string;
   onKeyEnter?: () => void;
 }
@@ -64,10 +64,15 @@ const LineInPostContent = ({
         </Typography>
       </Box>
 
-      <Box display="flex" flexDirection="column" width="100%">
+      <Box
+        display="flex"
+        flexDirection="column"
+        width="100%"
+        justifyContent="center"
+      >
         {renderTextField()}
         {isMultipleLine ? null : (
-          <Box display="flex" mt="8px" flexWrap="wrap">
+          <Box display="flex" mt={inFormCreate && '8px'} flexWrap="wrap">
             <ListTypographyWithDot contents={contents} {...props} />
           </Box>
         )}

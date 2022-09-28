@@ -18,7 +18,6 @@ export default function createPosts(
   }
 
   const {
-    description,
     jobName,
     jobRequirement,
     quantity,
@@ -64,10 +63,9 @@ export default function createPosts(
   prismaClientV1.posts
     .create({
       data: {
-        description: description || '',
         job_name: jobName,
         job_requirement: jobRequirement || '',
-        quantity: quantity || 1,
+        quantity: quantity || '1',
         status: status || 'OPEN',
         user: {
           connect: {

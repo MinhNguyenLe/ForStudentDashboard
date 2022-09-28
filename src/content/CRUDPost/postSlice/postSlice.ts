@@ -12,14 +12,13 @@ export interface PostState {
 const initialState: PostState = {
   value: 0,
   formCreate: {
-    description: '',
     jobName: '',
     jobRequirement: '',
-    quantity: 1,
+    quantity: '1',
     status: 'OPEN',
-    workLocations: [],
     timeWorking: [],
     salaryInformation: [],
+    workLocations: [],
     hashtags: [],
     userId: 1
   }
@@ -61,6 +60,7 @@ export const { setWorkLocations } = postSlice.actions;
 // the state. Selectors can also be defined inline where they're used instead of
 // in the slice file. For example: `useSelector((state: RootState) => state.post.value)`
 export const selectPost = (state: AppState) => state.post;
+export const selectPostFormCreate = (state: AppState) => state.post.formCreate;
 
 // We can also write thunks by hand, which may contain both sync and async logic.
 // Here's an example of conditionally dispatching actions based on current state.

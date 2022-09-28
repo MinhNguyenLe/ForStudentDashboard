@@ -9,7 +9,6 @@ import {
 } from '@prisma/client';
 
 export interface RequestBodyCreatePost {
-  description?: Posts['description'];
   jobName: Posts['job_name'];
   jobRequirement?: Posts['job_requirement'];
   quantity?: Posts['quantity'];
