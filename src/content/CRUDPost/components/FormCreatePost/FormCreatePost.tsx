@@ -1,4 +1,6 @@
+import { useAppDispatch, useAppSelector } from '@/store/hook';
 import Box from '@mui/material/Box';
+import { selectPost } from '../../postSlice';
 import LineInPostContent, {
   LineInPostContentProps
 } from '../LineInPostContent';
@@ -26,6 +28,11 @@ const formDataSkeleton: LineInPostContentProps[] = [
 ];
 
 export default function FormCreatePost() {
+  const dispatch = useAppDispatch();
+  const post = useAppSelector(selectPost);
+  
+  console.log(post,"----")
+
   return (
     <Box
       sx={{

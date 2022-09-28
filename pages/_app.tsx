@@ -14,6 +14,9 @@ import { SidebarProvider } from 'src/contexts/SidebarContext';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
+import { Provider as ReduxProvider } from 'react-redux'
+import store from '@/store';
+
 const clientSideEmotionCache = createEmotionCache();
 
 type NextPageWithLayout = NextPage & {
@@ -48,6 +51,7 @@ function StudentApp(props: StudentAppProps) {
           content="FIND PART_TIME JOB FOR STUDENTS"
         />
       </Head>
+      <ReduxProvider store={store}>
       <SidebarProvider>
         <ThemeProvider>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -56,6 +60,7 @@ function StudentApp(props: StudentAppProps) {
           </LocalizationProvider>
         </ThemeProvider>
       </SidebarProvider>
+      </ReduxProvider>
     </CacheProvider>
   );
 }
