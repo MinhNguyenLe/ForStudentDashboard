@@ -25,6 +25,8 @@ import {
 } from '@prisma/client';
 import LineInPostContent from '../LineInPostContent';
 
+import useSWR from 'swr';
+
 const CardActionsWrapper = styled(CardActions)(
   ({ theme }) => `
      background: ${theme.colors.alpha.black[5]};
@@ -43,7 +45,15 @@ export interface PostItemProps {
   post: PostFromResponse;
 }
 
+const fetcher = (url) => fetch(url).then((res) => res.json());
 function PostItem({ post }: PostItemProps) {
+  const { data, error } = useSWR(
+    'http://localhost:3005/api/posts/get-all',
+    fetcher
+  );
+
+  console.log('data', data, '----', 'error', error);
+
   return (
     <Card>
       <CardHeader
