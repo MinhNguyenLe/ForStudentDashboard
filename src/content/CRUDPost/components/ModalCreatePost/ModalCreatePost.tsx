@@ -10,82 +10,93 @@ import RHookFormProvider from '@/components/ComponentBase/RHookFormProvider';
 import useDialog from '@/hooks/useReUseDialog';
 
 import {
-  Posts,
-  // StatusPost,
-  TimeWorking,
-  SalaryInformation,
-  WorkLocation
-  // User,
-  // Hashtag
-  // Contact
+    Posts,
+    // StatusPost,
+    TimeWorking,
+    SalaryInformation,
+    WorkLocation
+    // User,
+    // Hashtag
+    // Contact
 } from '@prisma/client';
 import RDialog from '@/components/ComponentBase/RDialog';
 import { createPost } from '../../api';
+import { useAppSelector } from '@/store/hook';
+import { selectPostFormCreate } from '../../postSlice';
 
 export interface HookFormCreatePost {
-  jobName: Posts['job_name'];
-  jobRequirement?: Posts['job_requirement'];
-  quantity?: Posts['quantity'];
-  timeWorking?: TimeWorking['content'];
-  salaryInformation?: SalaryInformation['content'];
-  workLocations?: WorkLocation['content'];
-  // hashtags?: Array<Hashtag['content']>;
+    jobName: Posts['job_name'];
+    jobRequirement?: Posts['job_requirement'];
+    quantity?: Posts['quantity'];
+    timeWorking?: TimeWorking['content'];
+    salaryInformation?: SalaryInformation['content'];
+    workLocations?: WorkLocation['content'];
+    // hashtags?: Array<Hashtag['content']>;
 }
 
 const schema = yup
-  .object()
-  .shape({
-    jobName: yup.string().required()
-  })
-  .required();
+    .object()
+    .shape({
+        jobName: yup.string().required()
+    })
+    .required();
 
 const defaultValues: HookFormCreatePost = {
-  jobName: '',
-  jobRequirement: '',
-  quantity: '',
-  timeWorking: '',
-  salaryInformation: '',
-  workLocations: ''
+    jobName: '',
+    jobRequirement: '',
+    quantity: '',
+    timeWorking: '',
+    salaryInformation: '',
+    workLocations: ''
 };
 
 export type ListFieldsName = keyof typeof defaultValues;
 
 export default function ModalCreatePost() {
-  const { open, onCloseDialog, onOpenDialog } = useDialog(false);
+    const { timeWorking, salaryInformation, workLocations } =
+        useAppSelector(selectPostFormCreate);
 
-  const methodCreatePost = useForm<HookFormCreatePost>({
-    resolver: yupResolver(schema),
-    defaultValues
-  });
+    const { open, onCloseDialog, onOpenDialog } = useDialog(false);
 
-  const {
-    handleSubmit,
-    formState: { isSubmitting }
-  } = methodCreatePost;
+    const methodCreatePost = useForm<HookFormCreatePost>({
+        resolver: yupResolver(schema),
+        defaultValues
+    });
 
-  async function onSubmitPost(data: HookFormCreatePost) {
-    onCloseDialog();
+    const {
+        handleSubmit,
+        formState: { isSubmitting }
+    } = methodCreatePost;
 
-    const newPost = await createPost(data);
+    async function onSubmitPost(data: HookFormCreatePost) {
+        onCloseDialog();
 
-    console.log(newPost);
-  }
+        const newPost = await createPost({
+            ...data,
+            timeWorking,
+            salaryInformation,
+            workLocations,
+            userId: 1
+        });
 
-  return (
-    <RHookFormProvider
-      methods={methodCreatePost}
-      onFormSubmit={handleSubmit(onSubmitPost)}
-    >
-      <ButtonCreatePost onClick={onOpenDialog} />
-      <RDialog
-        titleContent="Create post"
-        onCloseAtHeader={() => {}} // make sure always show icon close at header
-        open={open}
-        onCloseDialog={onCloseDialog}
-        isSubmitting={isSubmitting}
-      >
-        <FormCreatePost />
-      </RDialog>
-    </RHookFormProvider>
-  );
+        console.log('newPost-----------', newPost);
+    }
+
+    return (
+        <RHookFormProvider
+            methods={methodCreatePost}
+            onFormSubmit={handleSubmit(onSubmitPost)}
+        >
+            <ButtonCreatePost onClick={onOpenDialog} />
+            <RDialog
+                titleContent="Create post"
+                onCloseAtHeader={() => {}} // make sure always show icon close at header
+                open={open}
+                onCloseDialog={onCloseDialog}
+                isSubmitting={isSubmitting}
+            >
+                <FormCreatePost />
+            </RDialog>
+        </RHookFormProvider>
+    );
 }

@@ -6,29 +6,29 @@ import { StylesProvider } from '@mui/styles';
 export const ThemeContext = createContext((_themeName: string): void => {});
 
 const ThemeProviderWrapper = ({ children }: { children: ReactNode }) => {
-  const [themeName, _setThemeName] =
-    useState<ThemeSchemaOptions>('PureLightTheme');
+    const [themeName, _setThemeName] =
+        useState<ThemeSchemaOptions>('PureLightTheme');
 
-  useEffect(() => {
-    const curThemeName =
-      (window.localStorage.getItem('appTheme') as ThemeSchemaOptions) ||
-      'PureLightTheme';
-    _setThemeName(curThemeName);
-  }, []);
+    useEffect(() => {
+        const curThemeName =
+            (window.localStorage.getItem('appTheme') as ThemeSchemaOptions) ||
+            'PureLightTheme';
+        _setThemeName(curThemeName);
+    }, []);
 
-  const theme = themeCreator(themeName);
-  const setThemeName = (themeName: ThemeSchemaOptions): void => {
-    window.localStorage.setItem('appTheme', themeName);
-    _setThemeName(themeName);
-  };
+    const theme = themeCreator(themeName);
+    const setThemeName = (themeName: ThemeSchemaOptions): void => {
+        window.localStorage.setItem('appTheme', themeName);
+        _setThemeName(themeName);
+    };
 
-  return (
-    <StylesProvider injectFirst>
-      <ThemeContext.Provider value={setThemeName}>
-        <ThemeProvider theme={theme}>{children}</ThemeProvider>
-      </ThemeContext.Provider>
-    </StylesProvider>
-  );
+    return (
+        <StylesProvider injectFirst>
+            <ThemeContext.Provider value={setThemeName}>
+                <ThemeProvider theme={theme}>{children}</ThemeProvider>
+            </ThemeContext.Provider>
+        </StylesProvider>
+    );
 };
 
 export default ThemeProviderWrapper;
